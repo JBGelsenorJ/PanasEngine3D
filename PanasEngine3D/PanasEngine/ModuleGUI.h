@@ -1,8 +1,8 @@
 #ifndef _MODULEGUI_H_
 #define _MODULEGUI_H_
 
-#include "Module.h"
 #include "Globals.h"
+#include "Module.h"
 #include "ImGui/imgui.h"
 
 class ModuleGUI : public Module
@@ -16,9 +16,10 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+	
 
 private:
-
+	bool menuwindow;
 };
 
 #endif // !_MODULEGUI_H_
