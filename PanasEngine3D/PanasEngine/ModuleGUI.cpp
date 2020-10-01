@@ -14,7 +14,7 @@
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-
+	menuwindow = false;
 }
 
 ModuleGUI::~ModuleGUI()
@@ -24,20 +24,14 @@ ModuleGUI::~ModuleGUI()
 
 bool ModuleGUI::Init()
 {
-	menuwindow = true;
-	// Setup Dear ImGui context
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-
-
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-
-	// Setup Dear ImGui style
 	ImGui::StyleColorsClassic();
 
-	// Setup Platform/Renderer bindings
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 
@@ -59,7 +53,8 @@ update_status ModuleGUI::Update(float dt)
 	if (ImGui::BeginMainMenuBar()) {
 
 		//Exit Menu
-		/*if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closeEngine = true;*/
+
+		if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closewindow = true;
 
 		//Examples Menu
 		if (ImGui::MenuItem("Examples")) {
@@ -67,6 +62,11 @@ update_status ModuleGUI::Update(float dt)
 			menuwindow = !menuwindow;
 
 		};
+		if (ImGui::MenuItem("Objects", NULL, true)) {
+		
+			/*ImGui::MenuItem("Cube", NULL, true);*/
+		
+		}
 	}
 
 	ImGui::EndMainMenuBar();
@@ -85,7 +85,6 @@ update_status ModuleGUI::PostUpdate(float dt)
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 
 	return UPDATE_CONTINUE;
 }

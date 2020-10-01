@@ -39,9 +39,9 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-
+	bool closewindow;
 private:
-
+	
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();

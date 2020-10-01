@@ -28,6 +28,8 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+	closewindow = false;
 }
 
 Application::~Application()
@@ -109,7 +111,7 @@ update_status Application::Update()
 		ret = item->data->PostUpdate(dt);
 		item = item->next;
 	}
-
+	if (closewindow) ret = UPDATE_STOP;
 	FinishUpdate();
 	return ret;
 }
