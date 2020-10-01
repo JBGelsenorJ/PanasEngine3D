@@ -1,6 +1,7 @@
+#include "Globals.h"
 #include "ModuleGUI.h"
 #include "Application.h"
-#include "Globals.h"
+
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
