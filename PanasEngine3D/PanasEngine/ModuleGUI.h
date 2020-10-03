@@ -3,6 +3,8 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include <vector>
+#include <string>
 #include "ImGui/imgui.h"
 
 class ModuleGUI : public Module
