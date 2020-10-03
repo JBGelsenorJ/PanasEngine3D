@@ -9,7 +9,7 @@
 #include "ImGui/imgui_impl_opengl3.h"
 
 #include "ImGui/imgui_internal.h"
-#include <gl/GL.h>
+#include "MathGeoLib/include/MathGeoLib.h"
 
 
 ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_enabled)
