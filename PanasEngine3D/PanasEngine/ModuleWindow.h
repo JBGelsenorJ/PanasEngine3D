@@ -35,7 +35,6 @@ public:
 	SDL_Surface* screen_surface;
 
 
-	float og_brightness;
 };
 
 #endif // __ModuleWindow_H__
