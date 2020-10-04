@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include "GLglew/glew/include/glew.h"
+
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
@@ -12,6 +15,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleGUI.h"
+
 
 class Application
 {
@@ -28,8 +32,12 @@ public:
 private:
 
 	Timer	ms_timer;
+
 	float	dt;
+
 	std::vector<Module*> list_modules;
+
+	
 
 public:
 
@@ -40,6 +48,23 @@ public:
 	update_status Update();
 	bool CleanUp();
 	bool closewindow;
+	
+
+	 int GetCPUCount();
+	 int GetCPUCache();
+	 int GetSystemRAM();
+	 const char* GetSystemCaps();
+	 //const char* GetGPU();
+	 const char* GetBrand();
+	 const char* GetModel();
+
+	 int GetBudget();
+	 int GetUsage();
+	 int GetAvailable();
+	 int GetReserved();
+	 std::string Caps;
+
+
 private:
 	
 	void AddModule(Module* mod);

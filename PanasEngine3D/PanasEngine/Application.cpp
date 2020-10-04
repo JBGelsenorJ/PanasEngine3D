@@ -121,3 +121,114 @@ void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
 }
+
+//--------------------------Hardware info--------------------------//
+int Application::GetCPUCount()
+{
+	return SDL_GetCPUCount();
+}
+
+int Application::GetCPUCache()
+{
+	return SDL_GetCPUCacheLineSize();
+}
+
+int Application::GetSystemRAM()
+{
+	int TransformtoGB = SDL_GetSystemRAM() * 0.001;
+	return TransformtoGB;
+}
+
+const char*  Application::GetSystemCaps()
+{
+	Caps.clear();
+	// IF the processor has certain register it will be added to the string
+	if (SDL_Has3DNow())
+	{
+		Caps.append("3D Now, ");
+	}
+
+	if (SDL_HasAVX())
+	{
+		Caps.append("AVX, ");
+	}
+ 
+	if (SDL_HasAVX2())
+	{
+		Caps.append("AVX2, ");
+	}
+
+	if (SDL_HasAltiVec())
+	{
+		Caps.append("AltiVec, ");
+	}
+
+	if (SDL_HasMMX())
+	{
+		Caps.append("MMX, ");
+	}
+
+	if (SDL_HasRDTSC())
+	{
+		Caps.append("RDTSC, ");
+	}
+	
+	if (SDL_HasSSE())
+	{
+		Caps.append("SSE, ");
+	}
+
+	if (SDL_HasSSE2())
+	{
+		Caps.append("SSE2, ");
+	}
+
+	if (SDL_HasSSE3())
+	{
+		Caps.append("SSE3, ");
+	}
+
+	if (SDL_HasSSE41())
+	{
+		Caps.append("SSE41, ");
+	}
+
+	if (SDL_HasSSE41())
+	{
+		Caps.append("SSE42, ");
+	}
+
+	return Caps.data();
+}
+
+const char* Application::GetBrand() {
+	return (const char*)glGetString(GL_VENDOR);
+}
+
+const char* Application::GetModel() {
+	return (const char*)glGetString(GL_RENDERER);
+}
+
+int Application::GetBudget() {
+	int budget;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX,  &budget);
+	return budget * 1024;
+}
+
+int Application::GetUsage() {
+	int usage;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &usage);
+	return usage / 1024;
+}
+
+int Application::GetAvailable() {
+	int available;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &available);
+	return available / 1024;
+}
+
+int Application::GetReserved() {
+	int reserved;
+	glGetIntegerv(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &reserved);
+	return reserved / 1024;
+}

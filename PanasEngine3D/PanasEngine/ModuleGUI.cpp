@@ -210,7 +210,23 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
+			ImGui::Text("SDL version: %d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
+			ImGui::Separator();
+			
+			int cpus, cache, ram;
+			ImGui::Text("CPUs: %i", cpus = App->GetCPUCount());
+			ImGui::SameLine();
+			ImGui::Text("(Cache: %iKb)", cache = App->GetCPUCache());
+			ImGui::Text("RAM: %i.0GB", ram = App->GetSystemRAM());
+			ImGui::Text("Caps: %s ", App->GetSystemCaps());
+			ImGui::Separator();
 
+			ImGui::Text("Brand: %s", App->GetBrand());
+			ImGui::Text("Model: %s", App->GetModel());
+			ImGui::Text("VRAM Budget: %i Mb", App->GetBudget());
+			ImGui::Text("VRAM Usage: %i Mb", App->GetUsage());
+			ImGui::Text("VRAM Available: %i Mb", App->GetAvailable());
+			ImGui::Text("VRAM Reserved: %i Mb", App->GetReserved());
 		}
 		ImGui::End();
 	}
