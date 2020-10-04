@@ -20,10 +20,14 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	brightness = 1.0f;
 	width = 1280;
 	height = 1024;
+	fps = 0;
 	fullscreen = false;
 	resizable = false;
 	borderless = true;
 	fulldesktop = false;
+
+	fps_log = { 100, 0 };
+	ms_log = { 100, 0 };
 
 }
 
@@ -178,7 +182,25 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::Begin("Configuration", &viewconfiguration);
 		if (ImGui::CollapsingHeader("Application"))
 		{
+			char AppName[32] = "Panas Engine";
+			ImGui::InputText("App Name", AppName, IM_ARRAYSIZE(AppName));
 			
+			char Organization[32] = "CITM";
+			ImGui::InputText("Organization", Organization, IM_ARRAYSIZE(Organization));
+
+			ImGui::SliderInt("Max FPS", &fps, 10, 120);
+			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
+			ImGui::Text("Limit Framerate: ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i", fps);
+		
+			char title[25];
+			
+			sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
+			ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+			sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
+			ImGui::PlotHistogram("##milliseconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 		}
 		if (ImGui::CollapsingHeader("Window"))
 		{
