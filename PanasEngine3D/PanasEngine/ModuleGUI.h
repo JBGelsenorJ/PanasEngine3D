@@ -22,6 +22,7 @@ public:
 
 private:
 	bool menuwindow;
+	bool aboutwindow;
 };
 
 #endif // !_MODULEGUI_H_
