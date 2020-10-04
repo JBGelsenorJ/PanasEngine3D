@@ -232,23 +232,43 @@ update_status ModuleGUI::Update(float dt)
 
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
+			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
+
 			ImGui::Text("SDL version: %d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
 			ImGui::Separator();
 			
 			int cpus, cache, ram;
-			ImGui::Text("CPUs: %i", cpus = App->GetCPUCount());
+			ImGui::Text("CPUs:");
 			ImGui::SameLine();
-			ImGui::Text("(Cache: %iKb)", cache = App->GetCPUCache());
-			ImGui::Text("RAM: %i.0GB", ram = App->GetSystemRAM());
-			ImGui::Text("Caps: %s ", App->GetSystemCaps());
+			ImGui::TextColored(color, "%i", cpus = App->GetCPUCount());
+			ImGui::SameLine();
+			ImGui::TextColored(color, "(Cache: %iKb)", cache = App->GetCPUCache());
+			ImGui::Text("RAM: ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i.0GB", ram = App->GetSystemRAM());
+			ImGui::Text("Caps: ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%s", App->GetSystemCaps());
 			ImGui::Separator();
 
-			ImGui::Text("Brand: %s", App->GetBrand());
-			ImGui::Text("Model: %s", App->GetModel());
-			ImGui::Text("VRAM Budget: %i Mb", App->GetBudget());
-			ImGui::Text("VRAM Usage: %i Mb", App->GetUsage());
-			ImGui::Text("VRAM Available: %i Mb", App->GetAvailable());
-			ImGui::Text("VRAM Reserved: %i Mb", App->GetReserved());
+			ImGui::Text("Brand:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%s", App->GetBrand());
+			ImGui::Text("Model:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%s", App->GetModel());
+			ImGui::Text("VRAM Budget:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i Mb", App->GetBudget());
+			ImGui::Text("VRAM Usage:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i Mb", App->GetUsage());
+			ImGui::Text("VRAM Available:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i Mb", App->GetAvailable());
+			ImGui::Text("VRAM Reserved:");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%i Mb", App->GetReserved());
 		}
 		ImGui::End();
 	}
