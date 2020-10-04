@@ -232,3 +232,4 @@ int Application::GetReserved() {
 	glGetIntegerv(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &reserved);
 	return reserved / 1024;
 }
+

@@ -22,6 +22,7 @@ public:
 
 	int width;
 	int height;
+	int fps;
 
 private:
 	bool menuwindow;
@@ -34,6 +35,9 @@ private:
 	bool fulldesktop;
 	 
 	float brightness;
+
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
 
 };
 

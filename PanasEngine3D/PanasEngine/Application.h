@@ -54,7 +54,6 @@ public:
 	 int GetCPUCache();
 	 int GetSystemRAM();
 	 const char* GetSystemCaps();
-	 //const char* GetGPU();
 	 const char* GetBrand();
 	 const char* GetModel();
 
@@ -65,9 +64,11 @@ public:
 	 std::string Caps;
 
 
+
 private:
 	
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
 };
