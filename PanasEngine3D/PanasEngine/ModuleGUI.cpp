@@ -16,6 +16,15 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 {
 	menuwindow = false;
 	aboutwindow = false;
+
+	brightness = 1.0f;
+	width = 1280;
+	height = 1024;
+	fullscreen = false;
+	resizable = false;
+	borderless = true;
+	fulldesktop = false;
+
 }
 
 ModuleGUI::~ModuleGUI()
@@ -142,15 +151,62 @@ update_status ModuleGUI::Update(float dt)
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::Checkbox("Console", &viewconsole)) { /* Do stuff */ }
+			if (ImGui::MenuItem("Configuration")) {
+				viewconfiguration = !viewconfiguration;
+			}
+			ImGui::EndMenu();
+		}
 	}
 
 	ImGui::EndMainMenuBar();
 
-
 	if (menuwindow) {
 		ImGui::ShowDemoWindow(&menuwindow);
 	}
+	if (viewconfiguration)
+	{
+		ImGui::Begin("Configuration", &viewconfiguration);
+		if (ImGui::CollapsingHeader("Application"))
+		{
+			
+		}
+		if (ImGui::CollapsingHeader("Window"))
+		{
+			ImGui::SliderFloat("Brightness", &brightness, 0.f, 1.0f);
+			App->window->SetBright(brightness);
 
+			ImGui::SliderInt("Width", &width, 640, 1920);
+			App->window->SetWidth(width);
+
+			ImGui::SliderInt("Height", &height, 480, 1080);
+			App->window->SetHeight(height);
+
+			
+			ImGui::Checkbox("Fullscreen", &fullscreen);
+			App->window->SetFullScreen(fullscreen);
+			ImGui::SameLine();
+
+			ImGui::Checkbox("Resizable", &resizable);
+			App->window->SetResizable(resizable);
+			
+			ImGui::Checkbox("Borderless", &borderless);
+			App->window->SetBorderless(borderless);
+			ImGui::SameLine();
+			
+			ImGui::Checkbox("Fulldesktop", &fulldesktop);
+			App->window->SetFullDesktop(fulldesktop);
+
+		}
+
+		if (ImGui::CollapsingHeader("Hardware"))
+		{
+
+		}
+		ImGui::End();
+	}
 
 	return UPDATE_CONTINUE;
 }
