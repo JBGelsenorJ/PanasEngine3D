@@ -20,8 +20,24 @@ public:
 	bool CleanUp();
 	
 
+	int width;
+	int height;
+
 private:
 	bool menuwindow;
+	bool viewconsole;
+	bool viewconfiguration;
+	bool fullscreen;
+	bool resizable;
+	bool borderless;
+	bool fulldesktop;
+
+
+	float brightness;
+
+
+
+
 };
 
 #endif // !_MODULEGUI_H_
