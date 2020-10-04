@@ -62,11 +62,18 @@ update_status ModuleGUI::Update(float dt)
 	//Main menu bar
 	if (aboutwindow == true) {
 		if (ImGui::Begin("About", &aboutwindow)) {
+
+			GLint major, minor;
+			glGetIntegerv(GL_MAJOR_VERSION, &major);
+			glGetIntegerv(GL_MINOR_VERSION, &minor);
+
 			ImGui::Text("PANAS ENGINE");
 
 			ImGui::Separator();
 
 			ImGui::TextWrapped("Panas Engine is an engine done by two students of the CITM University for the Engine subject. ");
+
+			ImGui::Separator();
 
 			ImGui::Text("Made by:");
 			if (ImGui::Button("Javier D. Belda Gonzalez")) {
@@ -85,7 +92,7 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::BulletText("SDL Mixer %d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
 			ImGui::BulletText("ImGui %s", ImGui::GetVersion());
 			ImGui::BulletText("Glew %d.%d.%d", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR, GLEW_VERSION_MICRO);
-			ImGui::BulletText("OpenGL %d.%d", GL_MAJOR_VERSION, GL_MINOR_VERSION);
+			ImGui::BulletText("OpenGL %d.%d", major, minor);
 			ImGui::BulletText("MathGeoLib 1.5");
 
 			ImGui::Separator();
