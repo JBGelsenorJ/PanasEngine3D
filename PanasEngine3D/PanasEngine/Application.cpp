@@ -195,7 +195,7 @@ const char*  Application::GetSystemCaps()
 
 	if (SDL_HasSSE41())
 	{
-		Caps.append("SSE42, ");
+		Caps.append("SSE42");
 	}
 
 	return Caps.data();
@@ -212,7 +212,7 @@ const char* Application::GetModel() {
 int Application::GetBudget() {
 	int budget;
 	glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX,  &budget);
-	return budget * 1024;
+	return budget / 1024;
 }
 
 int Application::GetUsage() {

@@ -253,6 +253,16 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::End();
 	}
 
+	if (viewconsole) {
+		ImGui::Begin("Console", &viewconsole);
+		
+		
+	
+
+		ImGui::End();
+	}
+
+
 	return UPDATE_CONTINUE;
 }
 
