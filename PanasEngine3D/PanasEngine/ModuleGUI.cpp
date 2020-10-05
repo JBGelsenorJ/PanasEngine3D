@@ -21,11 +21,14 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	width = 1280;
 	height = 1024;
 	fps = 0;
-	fullscreen = false;
-	resizable = false;
-	borderless = true;
-	fulldesktop = false;
 
+	fullscreen = false;
+	/*resizable = false;
+	borderless = false;
+	fulldesktop = false;*/
+
+	viewconfiguration = false;
+	viewconsole = false;
 	fps_log = { 100, 0 };
 	ms_log = { 100, 0 };
 
@@ -164,7 +167,9 @@ update_status ModuleGUI::Update(float dt)
 		}
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::Checkbox("Console", &viewconsole)) { /* Do stuff */ }
+			if (ImGui::MenuItem("Console")) {
+				viewconsole = !viewconsole;
+			}
 			if (ImGui::MenuItem("Configuration")) {
 				viewconfiguration = !viewconfiguration;
 			}
@@ -204,6 +209,8 @@ update_status ModuleGUI::Update(float dt)
 		}
 		if (ImGui::CollapsingHeader("Window"))
 		{
+		
+
 			ImGui::SliderFloat("Brightness", &brightness, 0.f, 1.0f);
 			App->window->SetBright(brightness);
 
@@ -275,12 +282,14 @@ update_status ModuleGUI::Update(float dt)
 
 	if (viewconsole) {
 		ImGui::Begin("Console", &viewconsole);
-		
-		
-	
 
+		for (int i = 0; i < log_record.size(); i++)
+		{
+			ImGui::Text("%s", log_record[i].c_str());
+		}
 		ImGui::End();
 	}
+
 
 
 	return UPDATE_CONTINUE;
@@ -304,3 +313,8 @@ bool ModuleGUI::CleanUp() {
 	return true;
 }
 
+void ModuleGUI::AddLogText(std::string incoming_text) {
+
+
+	log_record.push_back(incoming_text);
+}

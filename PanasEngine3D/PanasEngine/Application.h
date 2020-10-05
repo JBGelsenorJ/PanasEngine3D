@@ -72,3 +72,4 @@ private:
 	void FinishUpdate();
 
 };
+extern Application* App;
