@@ -18,11 +18,12 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
-	
-
+	void AddLogText(std::string incoming_text);
 	int width;
 	int height;
 	int fps;
+
+	bool activeScreen;
 
 private:
 	bool menuwindow;
@@ -33,11 +34,13 @@ private:
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;
-	 
+
 	float brightness;
 
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;
+
+	std::vector<std::string> log_record;
 
 };
 

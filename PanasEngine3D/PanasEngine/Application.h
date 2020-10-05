@@ -67,6 +67,7 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 
+
 public:
 
 	float	capped_ms;
@@ -77,3 +78,6 @@ public:
 
 
 };
+
+extern Application* App;
+
