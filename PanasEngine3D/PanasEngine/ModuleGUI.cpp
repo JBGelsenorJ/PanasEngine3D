@@ -91,13 +91,26 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Separator();
 
 			ImGui::Text("Libraries used: ");
-			
-			ImGui::BulletText("SDL %d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
-			ImGui::BulletText("SDL Mixer %d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
-			ImGui::BulletText("ImGui %s", ImGui::GetVersion());
-			ImGui::BulletText("Glew %d.%d.%d", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR, GLEW_VERSION_MICRO);
-			ImGui::BulletText("OpenGL %d.%d", major, minor);
-			ImGui::BulletText("MathGeoLib 1.5");
+			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
+
+			ImGui::BulletText("SDL ");
+			ImGui::SameLine();
+			ImGui::TextColored( color, "%d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
+			ImGui::BulletText("SDL Mixer ");
+			ImGui::SameLine();
+			ImGui::TextColored( color, "%d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
+			ImGui::BulletText("ImGui ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%s", ImGui::GetVersion());
+			ImGui::BulletText("Glew ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%d.%d.%d", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR, GLEW_VERSION_MICRO);
+			ImGui::BulletText("OpenGL ");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "%d.%d", major, minor);
+			ImGui::BulletText("MathGeoLib");
+			ImGui::SameLine();
+			ImGui::TextColored(color, "1.5");
 
 			ImGui::Separator();
 
