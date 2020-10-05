@@ -32,9 +32,7 @@ public:
 private:
 
 	Timer	ms_timer;
-
-	float	dt;
-
+	
 	std::vector<Module*> list_modules;
 
 	
@@ -62,13 +60,20 @@ public:
 	 int GetAvailable();
 	 int GetReserved();
 	 std::string Caps;
-
-
-
+	 
 private:
 	
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+public:
+
+	float	capped_ms;
+	
+	float	dt;
+	float	fps;
+	
+
 
 };

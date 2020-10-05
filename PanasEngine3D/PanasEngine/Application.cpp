@@ -30,6 +30,10 @@ Application::Application()
 	AddModule(renderer3D);
 
 	closewindow = false;
+
+	capped_ms = 1000 / 60;
+	fps = 0;
+	
 }
 
 Application::~Application()
@@ -69,11 +73,19 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
+	fps = 1.0f / dt;
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	int last_frame_ms = ms_timer.Read();
+
+	if (last_frame_ms < capped_ms)
+	{
+		SDL_Delay(capped_ms - last_frame_ms);
+	}
+	
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

@@ -26,8 +26,8 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	borderless = true;
 	fulldesktop = false;
 
-	fps_log = { 100, 0 };
-	ms_log = { 100, 0 };
+	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 }
 
@@ -200,20 +200,27 @@ update_status ModuleGUI::Update(float dt)
 			
 			char Organization[32] = "CITM";
 			ImGui::InputText("Organization", Organization, IM_ARRAYSIZE(Organization));
-
-			ImGui::SliderInt("Max FPS", &fps, 10, 120);
+			
 			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
+			int fps_c = 1000 / App->capped_ms;
+			
+			if (ImGui::SliderInt("Max FPS", &fps_c, 10, 120)) App->capped_ms = 1000 / fps_c;
+			
 			ImGui::Text("Limit Framerate: ");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%i", fps);
 		
+			fps_log.erase(fps_log.begin());
+			fps_log.push_back(App->fps);
+			ms_log.erase(ms_log.begin());
+			ms_log.push_back(App->dt * 1000);
+
 			char title[25];
-			
 			sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
 			ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-
 			sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
 			ImGui::PlotHistogram("##milliseconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+				
 		}
 		if (ImGui::CollapsingHeader("Window"))
 		{
