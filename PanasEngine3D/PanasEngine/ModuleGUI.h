@@ -35,6 +35,14 @@ private:
 	bool borderless;
 	bool fulldesktop;
 
+	bool depthtest;
+	bool cullface;
+	bool lighting;
+	bool colormaterial;
+	bool texture2D;
+	bool cubemap;
+	bool polygonssmooth;
+
 	float brightness;
 
 	std::vector<float> fps_log;

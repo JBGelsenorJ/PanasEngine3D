@@ -27,6 +27,14 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	borderless = true;
 	fulldesktop = false;
 
+	depthtest = false;
+	cullface = false;
+	lighting = false;
+	colormaterial = false;
+	texture2D = false;
+	cubemap = false;
+	polygonssmooth = false;
+
 
 	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -231,7 +239,6 @@ update_status ModuleGUI::Update(float dt)
 		if (ImGui::CollapsingHeader("Window"))
 		{
 		
-
 			ImGui::SliderFloat("Brightness", &brightness, 0.f, 1.0f);
 			App->window->SetBright(brightness);
 
@@ -257,7 +264,6 @@ update_status ModuleGUI::Update(float dt)
 			App->window->SetFullDesktop(fulldesktop);
 
 		}
-
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
 			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
@@ -297,6 +303,43 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::Text("VRAM Reserved:");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%i Mb", App->GetReserved());
+		}
+		if (ImGui::CollapsingHeader("Renderer")) {
+
+			ImGui::Text("OPENGL OPTIONS: ");
+			
+			ImGui::BulletText("General");
+			if (ImGui::Checkbox("Depth Test", &depthtest)) {
+				App->renderer3D->SetDepthtest(depthtest);
+			}
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Cull Face", &cullface)) {
+				App->renderer3D->SetCullface(cullface);
+			}
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Lightning", &lighting)) {
+				App->renderer3D->SetLighting(lighting);
+			}
+			
+			ImGui::BulletText("Polygons");
+			if (ImGui::Checkbox("Polygons smooth", &polygonssmooth)) {
+				App->renderer3D->SetPolygonssmooth(polygonssmooth);
+			}
+			
+			ImGui::BulletText("Color");
+			if (ImGui::Checkbox("Color Material", &colormaterial)) {
+				App->renderer3D->SetColormaterial(colormaterial);
+			}
+
+			ImGui::BulletText("Textures");
+			if (ImGui::Checkbox("2D", &texture2D)) {
+				App->renderer3D->SetTexture2D(texture2D);
+			}
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Cube Map", &cubemap)) {
+				App->renderer3D->SetCubemap(cubemap);
+			}
+			
 		}
 		ImGui::End();
 	}

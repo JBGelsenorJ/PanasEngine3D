@@ -19,6 +19,14 @@ public:
 
 	void OnResize(int width, int height);
 
+	void SetDepthtest(bool state);
+	void SetCullface(bool state);
+	void SetLighting(bool state);
+	void SetColormaterial(bool state);
+	void SetTexture2D(bool state);
+	void SetCubemap(bool state);
+	void SetPolygonssmooth(bool state);
+		
 public:
 
 	Light lights[MAX_LIGHTS];
