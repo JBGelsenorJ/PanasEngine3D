@@ -62,8 +62,12 @@ bool Application::Init()
 	{
 		ret = list_modules[i]->Start();
 	}
-
-	
+	LOG("Engine Info-----------------------")
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	ms_timer.Start();
 	return ret;
 }
