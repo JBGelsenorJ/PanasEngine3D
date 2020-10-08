@@ -35,6 +35,8 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	cubemap = false;
 	polygonssmooth = false;
 
+	wireframe = false;
+
 
 	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -167,6 +169,28 @@ update_status ModuleGUI::Update(float dt)
 
 		};
 		
+		if (ImGui::BeginMenu("Draw mode"))
+		{
+			if (ImGui::MenuItem("Solid")) {
+				wireframe = false; 
+			}
+			if (ImGui::MenuItem("Wireframe")) {
+				wireframe = true;
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Console")) {
+				viewconsole = !viewconsole;
+			}
+			if (ImGui::MenuItem("Configuration")) {
+				viewconfiguration = !viewconfiguration;
+			}
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Help")) {
 
 			if (ImGui::MenuItem("Gui Demo", NULL)) {
@@ -187,16 +211,7 @@ update_status ModuleGUI::Update(float dt)
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("View"))
-		{
-			if (ImGui::MenuItem("Console")) {
-				viewconsole = !viewconsole;
-			}
-			if (ImGui::MenuItem("Configuration")) {
-				viewconfiguration = !viewconfiguration;
-			}
-			ImGui::EndMenu();
-		}
+		
 	}
 
 	ImGui::EndMainMenuBar();
@@ -343,7 +358,7 @@ update_status ModuleGUI::Update(float dt)
 		}
 		ImGui::End();
 	}
-
+	
 	if (viewconsole) {
 		ImGui::Begin("Console", &viewconsole);
 
@@ -353,6 +368,7 @@ update_status ModuleGUI::Update(float dt)
 		}
 		ImGui::End();
 	}
+	
 
 
 
@@ -374,11 +390,18 @@ bool ModuleGUI::CleanUp() {
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
+	log_record.clear();
+	fps_log.clear();
+	ms_log.clear();
+
 	return true;
 }
 
 void ModuleGUI::AddLogText(std::string incoming_text) {
 
-
-	log_record.push_back(incoming_text);
+	if (&log_record != NULL) {
+		log_record.push_back(incoming_text);
+	}
+	
 }
+

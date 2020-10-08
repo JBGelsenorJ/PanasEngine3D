@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "Module.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
@@ -37,6 +38,17 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+	
+	Cube cube(1.0f, 1.0f, 1.0f);
+	if (App->gui->wireframe == true){
+		cube.wire = true;
+	}
+	else if (App->gui->wireframe == false) {
+		cube.wire = false;
+	}
+	cube.Render();
+	
+
 	return UPDATE_CONTINUE;
 }
 

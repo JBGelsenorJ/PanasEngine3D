@@ -25,6 +25,8 @@ public:
 
 	bool activeScreen;
 
+	bool wireframe;
+
 private:
 	bool menuwindow;
 	bool aboutwindow;
