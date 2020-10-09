@@ -280,7 +280,16 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, NULL);
-
+	/*
+	App->level->Draw();
+	if (debug_draw == true)
+	{
+		BeginDebugDraw();
+		App->DebugDraw();
+		EndDebugDraw();
+	}
+	*/
+	//App->editor->Draw();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
