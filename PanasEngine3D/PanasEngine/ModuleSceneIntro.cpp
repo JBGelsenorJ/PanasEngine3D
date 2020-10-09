@@ -46,7 +46,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	else if (App->gui->wireframe == false) {
 		cube.wire = false;
 	}
-	cube.Render();
+	//cube.Render();
 	
 
 	return UPDATE_CONTINUE;
