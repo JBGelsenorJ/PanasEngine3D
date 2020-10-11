@@ -27,6 +27,8 @@ public:
 	void SetCubemap(bool state);
 	void SetPolygonssmooth(bool state);
 		
+	void CreatecubeDirect();
+	void CreateCubeVertex();
 public:
 
 	Light lights[MAX_LIGHTS];
