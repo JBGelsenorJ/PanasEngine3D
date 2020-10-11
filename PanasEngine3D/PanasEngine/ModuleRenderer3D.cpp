@@ -293,7 +293,7 @@ void ModuleRenderer3D::SetPolygonssmooth(bool state) {
 	else if (state == true)
 		glDisable(GL_POLYGON_SMOOTH);
 }
-void ModuleRenderer3D::CreatecubeDirect() {
+void ModuleRenderer3D::CreateCubeDirect() {
 
 
 	//-------------------------------------Cube made by triangles----------------------------------------------//

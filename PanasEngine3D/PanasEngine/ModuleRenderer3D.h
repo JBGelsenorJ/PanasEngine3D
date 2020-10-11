@@ -27,7 +27,7 @@ public:
 	void SetCubemap(bool state);
 	void SetPolygonssmooth(bool state);
 		
-	void CreatecubeDirect();
+	void CreateCubeDirect();
 	void CreateCubeVertex();
 	void CreateCubeIndex();
 public:

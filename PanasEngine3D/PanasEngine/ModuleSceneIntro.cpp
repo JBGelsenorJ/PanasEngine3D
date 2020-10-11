@@ -41,14 +41,15 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	Cube cube(1.0f, 1.0f, 1.0f);
 	if (App->gui->wireframe == true){
-		cube.wire = true;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	else if (App->gui->wireframe == false) {
-		cube.wire = false;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	//cube.Render();
-	//App->render3D->CreateCubeVertex();
-	App->renderer3D->CreateCubeIndex();
+	App->renderer3D->CreateCubeVertex();
+	//App->renderer3D->CreateCubeIndex();
+	//App->renderer3D->CreateCubeDirect();
 
 	return UPDATE_CONTINUE;
 }
