@@ -193,8 +193,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
-	CreateCubeVertex();
-	
+	//CreateCubeVertex();
+	CreatecubeDirect();
 	/*uint my_indices = 1;
 	glGenBuffers(1, (GLuint*) & (my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
@@ -288,36 +288,57 @@ void ModuleRenderer3D::CreatecubeDirect() {
 
 	//-------------------------------------Cube made by triangles----------------------------------------------//
 	glLineWidth(2.0f);
-	//glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glBegin(GL_TRIANGLES);
+	
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(-1.f, 1.f, 1.f);
+	glVertex3f(-1.f, -1.f, 1.f);
 
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(-1.f, -1.f, 1.f);
+	glVertex3f(1.f, -1.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
 
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.0f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f );
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, -1.f, 1.f);
+	glVertex3f(1.f, -1.f, -1.f);
 
+	glVertex3f(1.f, -1.f, -1.f);
+	glVertex3f(1.f, 1.f, -1.f);
+	glVertex3f(1.f, 1.f, 1.f);
 
-	glVertex3f(1.f, 1.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, -1.f);
+	glVertex3f(-1.f, 1.f, -1.f);
 
-	glVertex3f(1.f, 1.f, 0.f);
-	glVertex3f(1.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(-1.f, 1.f, -1.f);
+	glVertex3f(-1.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
 
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(-1.f, 1.f, 1.f);
+	glVertex3f(-1.f, 1.f, -1.f);
+	glVertex3f(-1.f, -1.f, -1.f);
 
-	glVertex3f(0.f, 0.f, 0.f);
-	glVertex3f(1.f, 0.0f, 0.f);
-	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(-1.f, -1.f, -1.f);
+	glVertex3f(-1.f, -1.f, 1.f);
+	glVertex3f(-1.f, 1.f, 1.f);
 
-		glEnd();
+	glVertex3f(-1.f, -1.f, -1.f);
+	glVertex3f(1.f, -1.f, -1.f);
+	glVertex3f(1.f, -1.f, 1.f);
 
+	glVertex3f(1.f, -1.f, 1.f);
+	glVertex3f(-1.f, -1.f, 1.f);
+	glVertex3f(-1.f, -1.f, -1.f);
+
+	glVertex3f(1.f, -1.f, -1.f);
+	glVertex3f(-1.f, -1.f, -1.f);
+	glVertex3f(-1.f, 1.f, -1.f);
+
+	glVertex3f(-1.f, 1.f, -1.f);
+	glVertex3f(1.f, 1.f, -1.f);
+	glVertex3f(1.f, -1.f, -1.f);
+	glEnd();
 
 }
 void ModuleRenderer3D::CreateCubeVertex() {
