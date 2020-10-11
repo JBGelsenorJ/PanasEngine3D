@@ -59,7 +59,15 @@ static const float g_vertex_buffer_data[] = {
 	1.0f, 1.0f, 1.0f,
 	-1.0f, 1.0f, 1.0f,
 	1.0f,-1.0f, 1.0f };
-GLubyte indices[] = { 0, 1, 2,   2, 3, 0,      // front
+
+GLfloat vertices[] = { 1, 1, 1,  -1, 1, 1,  -1,-1, 1,   1,-1, 1,   // v0,v1,v2,v3 (front)
+						1, 1, 1,   1,-1, 1,   1,-1,-1,   1, 1,-1,   // v0,v3,v4,v5 (right)
+						1, 1, 1,   1, 1,-1,  -1, 1,-1,  -1, 1, 1,   // v0,v5,v6,v1 (top)
+					   -1, 1, 1,  -1, 1,-1,  -1,-1,-1,  -1,-1, 1,   // v1,v6,v7,v2 (left)
+					   -1,-1,-1,   1,-1,-1,   1,-1, 1,  -1,-1, 1,   // v7,v4,v3,v2 (bottom)
+						1,-1,-1,  -1,-1,-1,  -1, 1,-1,   1, 1,-1 }; // v4,v7,v6,v5 (back)
+
+uint indices[] = { 0, 1, 2,   2, 3, 0,      // front
 					   4, 5, 6,   6, 7, 4,      // right
 					   8, 9,10,  10,11, 8,      // top
 					  12,13,14,  14,15,12,      // left
@@ -193,8 +201,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
-	CreateCubeVertex();
-	
+	//CreateCubeVertex();
+	//CreateCubeIndex();
 	/*uint my_indices = 1;
 	glGenBuffers(1, (GLuint*) & (my_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
@@ -322,7 +330,6 @@ void ModuleRenderer3D::CreatecubeDirect() {
 }
 void ModuleRenderer3D::CreateCubeVertex() {
 
-
 	uint my_id = 0;
 	glGenBuffers(1, (GLuint*) & (my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
@@ -336,5 +343,20 @@ void ModuleRenderer3D::CreateCubeVertex() {
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data));
 	glDisableClientState(GL_VERTEX_ARRAY);
 
+}
 
+void ModuleRenderer3D::CreateCubeIndex() {
+
+	uint my_indices = 0;
+	glGenBuffers(1, (GLuint*) & (my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, indices, GL_STATIC_DRAW);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	
 }

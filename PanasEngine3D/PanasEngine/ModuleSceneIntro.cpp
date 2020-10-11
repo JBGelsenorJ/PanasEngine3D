@@ -47,7 +47,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		cube.wire = false;
 	}
 	//cube.Render();
-	
+	//App->render3D->CreateCubeVertex();
+	App->renderer3D->CreateCubeIndex();
 
 	return UPDATE_CONTINUE;
 }

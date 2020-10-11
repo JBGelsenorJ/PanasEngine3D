@@ -29,6 +29,7 @@ public:
 		
 	void CreatecubeDirect();
 	void CreateCubeVertex();
+	void CreateCubeIndex();
 public:
 
 	Light lights[MAX_LIGHTS];
