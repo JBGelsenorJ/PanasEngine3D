@@ -22,6 +22,8 @@
 #pragma comment (lib, "glu32.lib")      /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib")    /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "GLglew/glew/libx86/glew32.lib")		   /*link glew lib*/
+
+//----------------------------------- cube ----------------------------------------
 static const float g_vertex_buffer_data[] = {
 	-1.0f,-1.0f,-1.0f,
 	-1.0f,-1.0f, 1.0f,
@@ -73,6 +75,29 @@ uint indices[] = { 0, 1, 2,   2, 3, 0,      // front
 					  12,13,14,  14,15,12,      // left
 					  16,17,18,  18,19,16,      // bottom
 					  20,21,22,  22,23,20 };    // back
+
+//----------------------------------- pyramid ----------------------------------------
+float pyramid_vertices[] = {
+	//Bottom 
+	0.0f ,0.0f, 0.0f,
+	1.0f ,0.0f, 0.0f,
+	1.0f ,0.0f, 1.0f,
+	0.0f ,0.0f, 1.0f,
+
+	//Top
+	0.5f, 1.0f, 0.5f
+};
+
+uint pyramid_indices[]{
+	//Bottom
+	0, 1, 2,
+	2, 3, 0,
+
+	3, 2, 4, // Front
+	0, 3, 4, // Left
+	2, 1, 4, // Right
+	1, 0, 4  // Back
+};
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -294,8 +319,7 @@ void ModuleRenderer3D::SetPolygonssmooth(bool state) {
 		glDisable(GL_POLYGON_SMOOTH);
 }
 void ModuleRenderer3D::CreateCubeDirect() {
-
-
+	
 	//-------------------------------------Cube made by triangles----------------------------------------------//
 	glLineWidth(2.0f);
 	glDisable(GL_CULL_FACE);
@@ -382,4 +406,19 @@ void ModuleRenderer3D::CreateCubeIndex() {
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
+}
+
+void ModuleRenderer3D::CreatePyramid() {
+
+	uint my_indices = 0;
+	glGenBuffers(1, (GLuint*) & (my_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 18, pyramid_indices, GL_STATIC_DRAW);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, pyramid_vertices);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
