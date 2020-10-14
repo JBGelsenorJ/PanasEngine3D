@@ -46,13 +46,24 @@ update_status ModuleSceneIntro::Update(float dt)
 	else if (App->gui->wireframe == false) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	//cube.Render();
-	//App->renderer3D->CreateCubeVertex();
-	//App->renderer3D->CreateCubeIndex();
-	//App->renderer3D->CreateCubeDirect();
-	//App->renderer3D->CreatePyramid();
-	//App->renderer3D->CreateSphere(1, 24, 48);
-	App->renderer3D->CreateCylinder(1, 2, 4);
+	if (App->gui->cube) {
+		App->renderer3D->CreateCubeDirect();
+	}
+
+	if (App->gui->pyramid)
+	{
+		App->renderer3D->CreatePyramid();
+	}
+
+	if (App->gui->cylinder)
+	{
+		App->renderer3D->CreateCylinder(1, 2, 4);
+	}
+
+	if (App->gui->sphere)
+	{
+		App->renderer3D->CreateSphere(1, 24, 48);
+	}
 	return UPDATE_CONTINUE;
 }
 

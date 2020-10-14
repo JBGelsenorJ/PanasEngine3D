@@ -27,6 +27,11 @@ public:
 
 	bool wireframe;
 
+	bool cube;
+	bool pyramid;
+	bool cylinder;
+	bool sphere;
+
 private:
 	bool menuwindow;
 	bool aboutwindow;
@@ -44,6 +49,9 @@ private:
 	bool texture2D;
 	bool cubemap;
 	bool polygonssmooth;
+
+	
+	
 
 	float brightness;
 

@@ -35,6 +35,11 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	cubemap = false;
 	polygonssmooth = false;
 
+	cube = false;
+	pyramid = false;
+	cylinder = false;
+	sphere = false;
+
 	wireframe = false;
 
 
@@ -168,6 +173,35 @@ update_status ModuleGUI::Update(float dt)
 			menuwindow = !menuwindow;
 
 		};
+
+		if (ImGui::BeginMenu("Create GameObject"))
+		{
+			if (ImGui::MenuItem("Cube")) {
+				pyramid = false;
+				cylinder = false;
+				sphere = false;
+				cube = !cube;
+			}
+			if (ImGui::MenuItem("Pyramid")) {
+				cube = false;
+				cylinder = false;
+				sphere = false;
+				pyramid = !pyramid;
+			}
+			if (ImGui::MenuItem("Cylinder")) {
+				pyramid = false;
+				cube = false;
+				sphere = false;
+				cylinder = !cylinder;
+			}
+			if (ImGui::MenuItem("Sphere")) {
+				pyramid = false;
+				cylinder = false;
+				cube = false;
+				sphere = !sphere;
+			}
+			ImGui::EndMenu();
+		}
 		
 		if (ImGui::BeginMenu("Draw mode"))
 		{
@@ -208,6 +242,7 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("About", NULL)) {
 				aboutwindow = true;
 			}
+
 
 			ImGui::EndMenu();
 		}
