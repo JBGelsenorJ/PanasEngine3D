@@ -98,46 +98,15 @@ uint pyramid_indices[]{
 	1, 0, 4  // Back face
 };
 
-//----------------------------------- cylinder ----------------------------------------
-
-float cylinder_vertices[] = {
-	//Bottom face
-	0.0f ,0.0f, 0.0f,
-	0.5f ,0.0f, 0.0f,
-	1.0f ,0.0f, 0.0f,
-	1.0f ,0.0f, 1.0f,
-	0.5f ,0.0f, 0.5f,
-	0.0f ,0.0f, 1.0f,
-
-	//Top face
-	0.0f ,1.0f, 0.0f,
-	0.5f ,1.0f, 0.0f,
-	1.0f ,1.0f, 0.0f,
-	1.0f ,1.0f, 1.0f,
-	0.5f ,1.0f, 0.5f,
-	0.0f ,1.0f, 1.0f,
-};
-
-uint cylinder_indices[]{
-	//Bottom face
-	0, 1, 2,
-	2, 3, 0,
-	0, 3, 4,
-	4, 5, 0,
-	0, 5, 6,
-	6, 1, 0,
-	/*
-	3, 2, 4, // Front face
-	0, 3, 4, // Left face
-	2, 1, 4, // Right face
-	1, 0, 4  // Back face
-	*/
-};
-
 std::vector<GLfloat> sphere_vertices;
 std::vector<GLfloat> sphere_normals;
 std::vector<GLfloat> sphere_texcoords;
 std::vector<GLushort> sphere_indices;
+
+std::vector<GLfloat> cylinder_vertices;
+std::vector<GLfloat> cylinder_normals;
+std::vector<GLfloat> cylinder_texcoords;
+std::vector<GLushort> cylinder_indices;
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -265,7 +234,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
-{	
+{
 	//CreateCubeVertex();
 	//CreateCubeIndex();
 	//CreatecubeDirect();
@@ -277,7 +246,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, NULL);*/
-	
+
 	/*
 	App->level->Draw();
 	if (debug_draw == true)
@@ -359,12 +328,12 @@ void ModuleRenderer3D::SetPolygonssmooth(bool state) {
 		glDisable(GL_POLYGON_SMOOTH);
 }
 void ModuleRenderer3D::CreateCubeDirect() {
-	
+
 	//-------------------------------------Cube made by triangles----------------------------------------------//
 	glLineWidth(2.0f);
 	glDisable(GL_CULL_FACE);
 	glBegin(GL_TRIANGLES);
-	
+
 	glVertex3f(1.f, 1.f, 1.f);
 	glVertex3f(-1.f, 1.f, 1.f);
 	glVertex3f(-1.f, -1.f, 1.f);
@@ -415,6 +384,7 @@ void ModuleRenderer3D::CreateCubeDirect() {
 	glEnd();
 
 }
+
 void ModuleRenderer3D::CreateCubeVertex() {
 
 	uint my_id = 0;
@@ -426,7 +396,7 @@ void ModuleRenderer3D::CreateCubeVertex() {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	 //… bind and use other buffers
+	//… bind and use other buffers
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data));
 	glDisableClientState(GL_VERTEX_ARRAY);
 
@@ -445,7 +415,7 @@ void ModuleRenderer3D::CreateCubeIndex() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	
+
 }
 
 void ModuleRenderer3D::CreatePyramid() {
@@ -509,4 +479,153 @@ void ModuleRenderer3D::CreateSphere(float radius, unsigned int rings, unsigned i
 	glNormalPointer(GL_FLOAT, 0, &sphere_normals[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &sphere_texcoords[0]);
 	glDrawElements(GL_QUADS, sphere_indices.size(), GL_UNSIGNED_SHORT, &sphere_indices[0]);
+}
+
+void ModuleRenderer3D::CreateCylinder(float radius, float height, int sides) {
+	const float PI = 3.1415926f;
+	int sectorCount = 36;
+	float sectorStep = 2 * PI / sectorCount;
+	float sectorAngle;  // radian
+
+	std::vector<float> unitCircleVertices;
+	for (int i = 0; i <= sectorCount; ++i)
+	{
+		sectorAngle = i * sectorStep;
+		unitCircleVertices.push_back(cos(sectorAngle)); // x
+		unitCircleVertices.push_back(sin(sectorAngle)); // y
+		unitCircleVertices.push_back(0);                // z
+	}
+
+	std::vector<float>().swap(cylinder_vertices);
+	std::vector<float>().swap(cylinder_normals);
+	std::vector<float>().swap(cylinder_texcoords);
+
+	// get unit circle vectors on XY-plane
+	std::vector<float> unitVertices = unitCircleVertices;
+
+	// put side vertices to arrays
+	for (int i = 0; i < 2; ++i)
+	{
+		float h = -height / 2.0f + i * height;           // z value; -h/2 to h/2
+		float t = 1.0f - i;                              // vertical tex coord; 1 to 0
+
+		for (int j = 0, k = 0; j <= sectorCount; ++j, k += 3)
+		{
+			float ux = unitVertices[k];
+			float uy = unitVertices[k + 1];
+			float uz = unitVertices[k + 2];
+			// position vector
+			cylinder_vertices.push_back(ux * radius);             // vx
+			cylinder_vertices.push_back(uy * radius);             // vy
+			cylinder_vertices.push_back(h);                       // vz
+			// normal vector
+			cylinder_normals.push_back(ux);                       // nx
+			cylinder_normals.push_back(uy);                       // ny
+			cylinder_normals.push_back(uz);                       // nz
+			// texture coordinate
+			cylinder_texcoords.push_back((float)j / sectorCount); // s
+			cylinder_texcoords.push_back(t);                      // t
+		}
+	}
+
+	// the starting index for the base/top surface
+	//NOTE: it is used for generating indices later
+	int baseCenterIndex = (int)cylinder_vertices.size() / 3;
+	int topCenterIndex = baseCenterIndex + sectorCount + 1; // include center vertex
+
+	// put base and top vertices to arrays
+	for (int i = 0; i < 2; ++i)
+	{
+		float h = -height / 2.0f + i * height;           // z value; -h/2 to h/2
+		float nz = -1 + i * 2;                           // z value of normal; -1 to 1
+
+		// center point
+		cylinder_vertices.push_back(0);     cylinder_vertices.push_back(0);     cylinder_vertices.push_back(h);
+		cylinder_normals.push_back(0);      cylinder_normals.push_back(0);      cylinder_normals.push_back(nz);
+		cylinder_texcoords.push_back(0.5f); cylinder_texcoords.push_back(0.5f);
+
+		for (int j = 0, k = 0; j < sectorCount; ++j, k += 3)
+		{
+			float ux = unitVertices[k];
+			float uy = unitVertices[k + 1];
+			// position vector
+			cylinder_vertices.push_back(ux * radius);             // vx
+			cylinder_vertices.push_back(uy * radius);             // vy
+			cylinder_vertices.push_back(h);                       // vz
+			// normal vector
+			cylinder_normals.push_back(0);                        // nx
+			cylinder_normals.push_back(0);                        // ny
+			cylinder_normals.push_back(nz);                       // nz
+			// texture coordinate
+			cylinder_texcoords.push_back(-ux * 0.5f + 0.5f);      // s
+			cylinder_texcoords.push_back(-uy * 0.5f + 0.5f);      // t
+		}
+	}
+
+	std::vector<int> indices;
+	int k1 = 0;                         // 1st vertex index at base
+	int k2 = sectorCount + 1;           // 1st vertex index at top
+
+	// indices for the side surface
+	for (int i = 0; i < sectorCount; ++i, ++k1, ++k2)
+	{
+		// 2 triangles per sector
+		// k1 => k1+1 => k2
+		cylinder_indices.push_back(k1);
+		cylinder_indices.push_back(k1 + 1);
+		cylinder_indices.push_back(k2);
+
+		// k2 => k1+1 => k2+1
+		cylinder_indices.push_back(k2);
+		cylinder_indices.push_back(k1 + 1);
+		cylinder_indices.push_back(k2 + 1);
+	}
+
+	// indices for the base surface
+	//NOTE: baseCenterIndex and topCenterIndices are pre-computed during vertex generation
+	//      please see the previous code snippet
+	for (int i = 0, k = baseCenterIndex + 1; i < sectorCount; ++i, ++k)
+	{
+		if (i < sectorCount - 1)
+		{
+			cylinder_indices.push_back(baseCenterIndex);
+			cylinder_indices.push_back(k + 1);
+			cylinder_indices.push_back(k);
+		}
+		else // last triangle
+		{
+			cylinder_indices.push_back(baseCenterIndex);
+			cylinder_indices.push_back(baseCenterIndex + 1);
+			cylinder_indices.push_back(k);
+		}
+	}
+
+	// indices for the top surface
+	for (int i = 0, k = topCenterIndex + 1; i < sectorCount; ++i, ++k)
+	{
+		if (i < sectorCount - 1)
+		{
+			cylinder_indices.push_back(topCenterIndex);
+			cylinder_indices.push_back(k);
+			cylinder_indices.push_back(k + 1);
+		}
+		else // last triangle
+		{
+			cylinder_indices.push_back(topCenterIndex);
+			cylinder_indices.push_back(k);
+			cylinder_indices.push_back(topCenterIndex + 1);
+		}
+	}
+
+	glRotatef(90, 1, 0, 0);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &cylinder_vertices[0]);
+	glNormalPointer(GL_FLOAT, 0, &cylinder_normals[0]);
+	glTexCoordPointer(2, GL_FLOAT, 0, &cylinder_texcoords[0]);
+	glDrawElements(GL_TRIANGLES, cylinder_indices.size(), GL_UNSIGNED_SHORT, &cylinder_indices[0]);
+
 }

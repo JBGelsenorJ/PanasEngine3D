@@ -32,7 +32,7 @@ public:
 	void CreateCubeIndex();
 	void CreatePyramid();
 	void CreateSphere(float radius, unsigned int rings, unsigned int sectors);
-
+	void CreateCylinder(float radius, float height, int sides);
 public:
 
 	Light lights[MAX_LIGHTS];
