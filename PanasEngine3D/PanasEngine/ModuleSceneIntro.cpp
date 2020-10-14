@@ -50,7 +50,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	//App->renderer3D->CreateCubeVertex();
 	//App->renderer3D->CreateCubeIndex();
 	//App->renderer3D->CreateCubeDirect();
-	App->renderer3D->CreatePyramid();
+	//App->renderer3D->CreatePyramid();
+	App->renderer3D->CreateSphere(1, 24, 48);
 
 	return UPDATE_CONTINUE;
 }

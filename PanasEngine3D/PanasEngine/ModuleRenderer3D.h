@@ -31,6 +31,8 @@ public:
 	void CreateCubeVertex();
 	void CreateCubeIndex();
 	void CreatePyramid();
+	void CreateSphere(float radius, unsigned int rings, unsigned int sectors);
+
 public:
 
 	Light lights[MAX_LIGHTS];

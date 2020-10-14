@@ -62,42 +62,82 @@ static const float g_vertex_buffer_data[] = {
 	-1.0f, 1.0f, 1.0f,
 	1.0f,-1.0f, 1.0f };
 
-GLfloat vertices[] = { 1, 1, 1,  -1, 1, 1,  -1,-1, 1,   1,-1, 1,   // v0,v1,v2,v3 (front)
-						1, 1, 1,   1,-1, 1,   1,-1,-1,   1, 1,-1,   // v0,v3,v4,v5 (right)
-						1, 1, 1,   1, 1,-1,  -1, 1,-1,  -1, 1, 1,   // v0,v5,v6,v1 (top)
-					   -1, 1, 1,  -1, 1,-1,  -1,-1,-1,  -1,-1, 1,   // v1,v6,v7,v2 (left)
-					   -1,-1,-1,   1,-1,-1,   1,-1, 1,  -1,-1, 1,   // v7,v4,v3,v2 (bottom)
-						1,-1,-1,  -1,-1,-1,  -1, 1,-1,   1, 1,-1 }; // v4,v7,v6,v5 (back)
+GLfloat vertices[] = { 1, 1, 1,  -1, 1, 1,  -1,-1, 1,   1,-1, 1,   // v0,v1,v2,v3 (front face)
+						1, 1, 1,   1,-1, 1,   1,-1,-1,   1, 1,-1,   // v0,v3,v4,v5 (right face)
+						1, 1, 1,   1, 1,-1,  -1, 1,-1,  -1, 1, 1,   // v0,v5,v6,v1 (top face)
+					   -1, 1, 1,  -1, 1,-1,  -1,-1,-1,  -1,-1, 1,   // v1,v6,v7,v2 (left face)
+					   -1,-1,-1,   1,-1,-1,   1,-1, 1,  -1,-1, 1,   // v7,v4,v3,v2 (bottom face)
+						1,-1,-1,  -1,-1,-1,  -1, 1,-1,   1, 1,-1 }; // v4,v7,v6,v5 (back face)
 
-uint indices[] = { 0, 1, 2,   2, 3, 0,      // front
-					   4, 5, 6,   6, 7, 4,      // right
-					   8, 9,10,  10,11, 8,      // top
-					  12,13,14,  14,15,12,      // left
-					  16,17,18,  18,19,16,      // bottom
-					  20,21,22,  22,23,20 };    // back
+uint indices[] = { 0, 1, 2,   2, 3, 0,      // front face
+				   4, 5, 6,   6, 7, 4,      // right face
+				   8, 9,10,  10,11, 8,      // top face
+				   12,13,14,  14,15,12,      // left face
+				   16,17,18,  18,19,16,      // bottom face
+				   20,21,22,  22,23,20 };    // back face
 
 //----------------------------------- pyramid ----------------------------------------
 float pyramid_vertices[] = {
-	//Bottom 
+	//Bottom face
 	0.0f ,0.0f, 0.0f,
 	1.0f ,0.0f, 0.0f,
 	1.0f ,0.0f, 1.0f,
 	0.0f ,0.0f, 1.0f,
 
-	//Top
+	//Top face
 	0.5f, 1.0f, 0.5f
 };
 
 uint pyramid_indices[]{
-	//Bottom
+	//Bottom face
+	0, 1, 2,	2, 3, 0,
+
+	3, 2, 4, // Front face
+	0, 3, 4, // Left face
+	2, 1, 4, // Right face
+	1, 0, 4  // Back face
+};
+
+//----------------------------------- cylinder ----------------------------------------
+
+float cylinder_vertices[] = {
+	//Bottom face
+	0.0f ,0.0f, 0.0f,
+	0.5f ,0.0f, 0.0f,
+	1.0f ,0.0f, 0.0f,
+	1.0f ,0.0f, 1.0f,
+	0.5f ,0.0f, 0.5f,
+	0.0f ,0.0f, 1.0f,
+
+	//Top face
+	0.0f ,1.0f, 0.0f,
+	0.5f ,1.0f, 0.0f,
+	1.0f ,1.0f, 0.0f,
+	1.0f ,1.0f, 1.0f,
+	0.5f ,1.0f, 0.5f,
+	0.0f ,1.0f, 1.0f,
+};
+
+uint cylinder_indices[]{
+	//Bottom face
 	0, 1, 2,
 	2, 3, 0,
-
-	3, 2, 4, // Front
-	0, 3, 4, // Left
-	2, 1, 4, // Right
-	1, 0, 4  // Back
+	0, 3, 4,
+	4, 5, 0,
+	0, 5, 6,
+	6, 1, 0,
+	/*
+	3, 2, 4, // Front face
+	0, 3, 4, // Left face
+	2, 1, 4, // Right face
+	1, 0, 4  // Back face
+	*/
 };
+
+std::vector<GLfloat> sphere_vertices;
+std::vector<GLfloat> sphere_normals;
+std::vector<GLfloat> sphere_texcoords;
+std::vector<GLushort> sphere_indices;
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -421,4 +461,52 @@ void ModuleRenderer3D::CreatePyramid() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ModuleRenderer3D::CreateSphere(float radius, unsigned int rings, unsigned int sectors) {
+
+	float const R = 1. / (float)(rings - 1);
+	float const S = 1. / (float)(sectors - 1);
+	int r, s;
+
+	sphere_vertices.resize(rings * sectors * 3);
+	sphere_normals.resize(rings * sectors * 3);
+	sphere_texcoords.resize(rings * sectors * 2);
+	std::vector<GLfloat>::iterator v = sphere_vertices.begin();
+	std::vector<GLfloat>::iterator n = sphere_normals.begin();
+	std::vector<GLfloat>::iterator t = sphere_texcoords.begin();
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+		float const y = sin(-M_PI_2 + M_PI * r * R);
+		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
+		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+
+		*t++ = s * S;
+		*t++ = r * R;
+
+		*v++ = x * radius;
+		*v++ = y * radius;
+		*v++ = z * radius;
+
+		*n++ = x;
+		*n++ = y;
+		*n++ = z;
+	}
+
+	sphere_indices.resize(rings * sectors * 4);
+	std::vector<GLushort>::iterator i = sphere_indices.begin();
+	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++) {
+		*i++ = (r + 1) * sectors + s;
+		*i++ = (r + 1) * sectors + (s + 1);
+		*i++ = r * sectors + (s + 1);
+		*i++ = r * sectors + s;
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &sphere_vertices[0]);
+	glNormalPointer(GL_FLOAT, 0, &sphere_normals[0]);
+	glTexCoordPointer(2, GL_FLOAT, 0, &sphere_texcoords[0]);
+	glDrawElements(GL_QUADS, sphere_indices.size(), GL_UNSIGNED_SHORT, &sphere_indices[0]);
 }
