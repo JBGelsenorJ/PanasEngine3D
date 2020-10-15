@@ -53,6 +53,8 @@ private:
 	
 	float brightness;
 
+	bool* dockingwindow;
+
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;
 
