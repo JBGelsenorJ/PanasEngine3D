@@ -48,6 +48,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 
 	viewconfiguration = false;
 	viewconsole = false;
+
 }
 
 ModuleGUI::~ModuleGUI()
@@ -62,6 +63,7 @@ bool ModuleGUI::Init()
 	ImGui::CreateContext();
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ImGui::StyleColorsClassic();
 
@@ -82,7 +84,6 @@ update_status ModuleGUI::PreUpdate(float dt)
 
 update_status ModuleGUI::Update(float dt)
 {
-	//Main menu bar
 	if (aboutwindow == true) {
 		if (ImGui::Begin("About", &aboutwindow)) {
 
@@ -106,7 +107,7 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::Button("Silvino Medina Cardona")) {
 				ShellExecuteA(NULL, "open", "https://github.com/silvino00", NULL, NULL, SW_SHOWNORMAL);
 			}
-			
+
 			ImGui::Separator();
 
 			ImGui::Text("Libraries used: ");
@@ -114,10 +115,10 @@ update_status ModuleGUI::Update(float dt)
 
 			ImGui::BulletText("SDL ");
 			ImGui::SameLine();
-			ImGui::TextColored( color, "%d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
+			ImGui::TextColored(color, "%d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
 			ImGui::BulletText("SDL Mixer ");
 			ImGui::SameLine();
-			ImGui::TextColored( color, "%d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
+			ImGui::TextColored(color, "%d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
 			ImGui::BulletText("ImGui ");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%s", ImGui::GetVersion());
@@ -202,11 +203,11 @@ update_status ModuleGUI::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
-		
+
 		if (ImGui::BeginMenu("Draw mode"))
 		{
 			if (ImGui::MenuItem("Solid")) {
-				wireframe = false; 
+				wireframe = false;
 			}
 			if (ImGui::MenuItem("Wireframe")) {
 				wireframe = true;
@@ -246,7 +247,7 @@ update_status ModuleGUI::Update(float dt)
 
 			ImGui::EndMenu();
 		}
-		
+
 	}
 
 	ImGui::EndMainMenuBar();
@@ -261,19 +262,19 @@ update_status ModuleGUI::Update(float dt)
 		{
 			char AppName[32] = "Panas Engine";
 			ImGui::InputText("App Name", AppName, IM_ARRAYSIZE(AppName));
-			
+
 			char Organization[32] = "CITM";
 			ImGui::InputText("Organization", Organization, IM_ARRAYSIZE(Organization));
-			
+
 			ImVec4 color(1.0f, 1.0f, 0.0f, 1.0f);
 			int fps_c = 1000 / App->capped_ms;
-			
+
 			if (ImGui::SliderInt("Max FPS", &fps_c, 10, 120)) App->capped_ms = 1000 / fps_c;
-			
+
 			ImGui::Text("Limit Framerate: ");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%i", fps);
-		
+
 			fps_log.erase(fps_log.begin());
 			fps_log.push_back(App->fps);
 			ms_log.erase(ms_log.begin());
@@ -284,11 +285,11 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 			sprintf_s(title, 25, "Milliseconds %.1f", ms_log[ms_log.size() - 1]);
 			ImGui::PlotHistogram("##milliseconds", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
-				
+
 		}
 		if (ImGui::CollapsingHeader("Window"))
 		{
-		
+
 			ImGui::SliderFloat("Brightness", &brightness, 0.f, 1.0f);
 			App->window->SetBright(brightness);
 
@@ -298,18 +299,18 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::SliderInt("Height", &height, 480, 1080);
 			App->window->SetHeight(height);
 
-			
+
 			ImGui::Checkbox("Fullscreen", &fullscreen);
 			App->window->SetFullScreen(fullscreen);
 			ImGui::SameLine();
 
 			ImGui::Checkbox("Resizable", &resizable);
 			App->window->SetResizable(resizable);
-			
+
 			ImGui::Checkbox("Borderless", &borderless);
 			App->window->SetBorderless(borderless);
 			ImGui::SameLine();
-			
+
 			ImGui::Checkbox("Fulldesktop", &fulldesktop);
 			App->window->SetFullDesktop(fulldesktop);
 
@@ -320,7 +321,7 @@ update_status ModuleGUI::Update(float dt)
 
 			ImGui::Text("SDL version: %d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
 			ImGui::Separator();
-			
+
 			int cpus, cache, ram;
 			ImGui::Text("CPUs:");
 			ImGui::SameLine();
@@ -357,7 +358,7 @@ update_status ModuleGUI::Update(float dt)
 		if (ImGui::CollapsingHeader("Renderer")) {
 
 			ImGui::Text("OPENGL OPTIONS: ");
-			
+
 			ImGui::BulletText("General");
 			if (ImGui::Checkbox("Depth Test", &depthtest)) {
 				App->renderer3D->SetDepthtest(depthtest);
@@ -370,12 +371,12 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::Checkbox("Lightning", &lighting)) {
 				App->renderer3D->SetLighting(lighting);
 			}
-			
+
 			ImGui::BulletText("Polygons");
 			if (ImGui::Checkbox("Polygons smooth", &polygonssmooth)) {
 				App->renderer3D->SetPolygonssmooth(polygonssmooth);
 			}
-			
+
 			ImGui::BulletText("Color");
 			if (ImGui::Checkbox("Color Material", &colormaterial)) {
 				App->renderer3D->SetColormaterial(colormaterial);
@@ -389,11 +390,11 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::Checkbox("Cube Map", &cubemap)) {
 				App->renderer3D->SetCubemap(cubemap);
 			}
-			
+
 		}
 		ImGui::End();
 	}
-	
+
 	if (viewconsole) {
 		ImGui::Begin("Console", &viewconsole);
 
@@ -403,9 +404,6 @@ update_status ModuleGUI::Update(float dt)
 		}
 		ImGui::End();
 	}
-	
-
-
 
 	return UPDATE_CONTINUE;
 }
@@ -438,5 +436,70 @@ void ModuleGUI::AddLogText(std::string incoming_text) {
 		log_record.push_back(incoming_text);
 	}
 	
+}
+
+update_status ModuleGUI::DockSpace(bool* p_open)
+{
+	update_status ret = UPDATE_CONTINUE;
+
+	static bool opt_fullscreen = true;
+	static bool opt_padding = false;
+	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+	// because it would be confusing to have two docking targets within each others.
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	if (opt_fullscreen)
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->GetWorkPos());
+		ImGui::SetNextWindowSize(viewport->GetWorkSize());
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	}
+	else
+	{
+		dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+	}
+
+	// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+	// and handle the pass-thru hole, so we ask Begin() to not render a background.
+	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+		window_flags |= ImGuiWindowFlags_NoBackground;
+
+	// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+	// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+	// all active windows docked into it will lose their parent and become undocked.
+	// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+	if (!opt_padding)
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace Demo", p_open, window_flags);
+	if (!opt_padding)
+		ImGui::PopStyleVar();
+
+	if (opt_fullscreen)
+		ImGui::PopStyleVar(2);
+
+	// DockSpace
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+	}
+
+	if (ImGui::BeginMenuBar())
+	{
+		ret = UPDATE_CONTINUE;
+	}
+	else{
+		ret = UPDATE_STOP;
+	}
+
+	return ret;
 }
 

@@ -14,6 +14,7 @@ public:
 	ModuleGUI::~ModuleGUI();
 
 	bool Init();
+	update_status DockSpace(bool* p_open);
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -49,10 +50,7 @@ private:
 	bool texture2D;
 	bool cubemap;
 	bool polygonssmooth;
-
 	
-	
-
 	float brightness;
 
 	std::vector<float> fps_log;

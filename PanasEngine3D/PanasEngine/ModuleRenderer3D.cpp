@@ -16,7 +16,6 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 
-
 #include "SDL\include\SDL_opengl.h"
 
 #pragma comment (lib, "glu32.lib")      /* link OpenGL Utility lib     */
