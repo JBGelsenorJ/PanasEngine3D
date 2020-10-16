@@ -381,7 +381,7 @@ void ModuleRenderer3D::CreateCubeDirect() {
 	glVertex3f(1.f, 1.f, -1.f);
 	glVertex3f(1.f, -1.f, -1.f);
 	glEnd();
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleRenderer3D::CreateCubeVertex() {
@@ -398,7 +398,7 @@ void ModuleRenderer3D::CreateCubeVertex() {
 	//… bind and use other buffers
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data));
 	glDisableClientState(GL_VERTEX_ARRAY);
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleRenderer3D::CreateCubeIndex() {
@@ -414,6 +414,7 @@ void ModuleRenderer3D::CreateCubeIndex() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 
@@ -430,6 +431,7 @@ void ModuleRenderer3D::CreatePyramid() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleRenderer3D::CreateSphere(float radius, unsigned int rings, unsigned int sectors) {
@@ -478,6 +480,7 @@ void ModuleRenderer3D::CreateSphere(float radius, unsigned int rings, unsigned i
 	glNormalPointer(GL_FLOAT, 0, &sphere_normals[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &sphere_texcoords[0]);
 	glDrawElements(GL_QUADS, sphere_indices.size(), GL_UNSIGNED_SHORT, &sphere_indices[0]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleRenderer3D::CreateCylinder(float radius, float height, int sides) {
@@ -626,5 +629,5 @@ void ModuleRenderer3D::CreateCylinder(float radius, float height, int sides) {
 	glNormalPointer(GL_FLOAT, 0, &cylinder_normals[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &cylinder_texcoords[0]);
 	glDrawElements(GL_TRIANGLES, cylinder_indices.size(), GL_UNSIGNED_SHORT, &cylinder_indices[0]);
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
