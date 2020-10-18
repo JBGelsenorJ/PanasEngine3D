@@ -64,6 +64,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		App->renderer3D->CreateSphere(1, 24, 48);
 	}
+
 	return UPDATE_CONTINUE;
 }
 

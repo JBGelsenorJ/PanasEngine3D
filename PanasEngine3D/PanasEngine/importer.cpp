@@ -25,7 +25,7 @@ bool Importer::Init() {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	UploadFile("BakerHouse.fbx");
+	//UploadFile("BakerHouse.fbx");
 	return true;
 }
 
@@ -71,6 +71,20 @@ void Importer::UploadFile(char* file_path) {
 				myMesh.num_normals = ourMesh->mNumVertices;
 				myMesh.normals = new float[myMesh.num_normals * 3];
 				memcpy(myMesh.normals, ourMesh->mNormals, sizeof(float) * myMesh.num_normals * 3);
+			}
+
+			if (ourMesh->HasVertexColors(i))
+			{
+				myMesh.num_colors = ourMesh->mNumVertices;
+				myMesh.colors = new float[myMesh.num_colors * 4];
+				memcpy(myMesh.colors, ourMesh->mColors, sizeof(float) * myMesh.num_colors * 4);
+			}
+
+			if (ourMesh->HasTextureCoords(i))
+			{
+				myMesh.num_texcoords = ourMesh->mNumVertices;
+				myMesh.texcoords = new float[myMesh.num_texcoords * 2];
+				memcpy(myMesh.texcoords, ourMesh->mTextureCoords, sizeof(float) * myMesh.num_texcoords * 2);
 			}
 
 		}

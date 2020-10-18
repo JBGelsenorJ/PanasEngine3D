@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "importer.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -31,6 +32,8 @@ bool ModuleInput::Init()
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
 	return ret;
 }
@@ -88,6 +91,8 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	bool quit = false;
 	SDL_Event e;
+	char* dropped_filedir;
+
 	while(SDL_PollEvent(&e))
 	{
 		switch(e.type)
@@ -107,6 +112,12 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_QUIT:
 			quit = true;
 			break;
+
+			case SDL_DROPFILE:
+				dropped_filedir = e.drop.file;
+				App->imp->UploadFile(dropped_filedir);
+				SDL_free(dropped_filedir);
+				break;
 
 			case SDL_WINDOWEVENT:
 			{

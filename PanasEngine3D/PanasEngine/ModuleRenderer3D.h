@@ -27,6 +27,7 @@ public:
 	void SetTexture2D(bool state);
 	void SetCubemap(bool state);
 	void SetPolygonssmooth(bool state);
+	void RenderFBX();
 		
 	void CreateCubeDirect();
 	void CreateCubeVertex();

@@ -12,6 +12,14 @@ struct Mesh
 	uint	num_normals = 0;
 	float*	normals = NULL;
 
+	uint	id_colors = 0;
+	uint	num_colors = 0;
+	float* colors = NULL;
+
+	uint	id_texcoords = 0;
+	uint	num_texcoords = 0;
+	float* texcoords = NULL;
+
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
 	float* vertex = nullptr;

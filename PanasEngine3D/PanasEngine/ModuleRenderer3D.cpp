@@ -196,22 +196,6 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 
-		mesh = &App->imp->myMesh;
-
-		glGenBuffers(1, (GLuint*)&mesh->id_vertex);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
-
-
-		glGenBuffers(1, (GLuint*)&mesh->id_index);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*)&mesh->id_normals);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
-
-
 	}
 
 	// Projection matrix for
@@ -244,6 +228,31 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
+	RenderFBX();
+
+	App->gui->Draw();
+	SDL_GL_SwapWindow(App->window->window);
+
+	return UPDATE_CONTINUE;
+}
+
+
+void ModuleRenderer3D::RenderFBX() {
+		
+	mesh = &App->imp->myMesh;
+
+	glGenBuffers(1, (GLuint*)&mesh->id_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
+	 
+	glGenBuffers(1, (GLuint*)&mesh->id_index);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*)&mesh->id_normals);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
@@ -257,13 +266,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	glDrawElements(GL_TRIANGLES, App->imp->myMesh.num_index, GL_UNSIGNED_INT, NULL);
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	App->gui->Draw();
-	SDL_GL_SwapWindow(App->window->window);
-
-	return UPDATE_CONTINUE;
 }
 
 // Called before quitting
@@ -387,6 +395,8 @@ void ModuleRenderer3D::CreateCubeDirect() {
 	glVertex3f(1.f, 1.f, -1.f);
 	glVertex3f(1.f, -1.f, -1.f);
 	glEnd();
+	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -404,6 +414,8 @@ void ModuleRenderer3D::CreateCubeVertex() {
 	//… bind and use other buffers
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data));
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -420,8 +432,9 @@ void ModuleRenderer3D::CreateCubeIndex() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleRenderer3D::CreatePyramid() {
@@ -437,6 +450,8 @@ void ModuleRenderer3D::CreatePyramid() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -486,6 +501,8 @@ void ModuleRenderer3D::CreateSphere(float radius, unsigned int rings, unsigned i
 	glNormalPointer(GL_FLOAT, 0, &sphere_normals[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &sphere_texcoords[0]);
 	glDrawElements(GL_QUADS, sphere_indices.size(), GL_UNSIGNED_SHORT, &sphere_indices[0]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -635,5 +652,7 @@ void ModuleRenderer3D::CreateCylinder(float radius, float height, int sides) {
 	glNormalPointer(GL_FLOAT, 0, &cylinder_normals[0]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &cylinder_texcoords[0]);
 	glDrawElements(GL_TRIANGLES, cylinder_indices.size(), GL_UNSIGNED_SHORT, &cylinder_indices[0]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
