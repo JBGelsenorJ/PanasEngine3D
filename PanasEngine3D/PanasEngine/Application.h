@@ -15,7 +15,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleGUI.h"
-
+#include "importer.h"
 
 class Application
 {
@@ -28,6 +28,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleGUI* gui;
+	Importer* imp;
 
 private:
 

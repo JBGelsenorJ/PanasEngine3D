@@ -10,6 +10,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	physics = new ModulePhysics3D(this);
 	gui = new ModuleGUI(this);
+	imp = new Importer(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -22,7 +23,8 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(gui);
-	
+	AddModule(imp);
+
 	// Scenes
 	AddModule(scene_intro);
 
