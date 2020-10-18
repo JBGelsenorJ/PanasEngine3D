@@ -103,6 +103,7 @@ std::vector<GLushort> cylinder_indices;
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	context = nullptr;
+
 }
 
 // Destructor
@@ -231,6 +232,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	RenderFBX();
 
 	App->gui->Draw();
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -238,13 +240,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 void ModuleRenderer3D::RenderFBX() {
-		
+	
 	mesh = &App->imp->myMesh;
 
 	glGenBuffers(1, (GLuint*)&mesh->id_vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
-	 
+
 	glGenBuffers(1, (GLuint*)&mesh->id_index);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
@@ -253,6 +255,7 @@ void ModuleRenderer3D::RenderFBX() {
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
 
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
