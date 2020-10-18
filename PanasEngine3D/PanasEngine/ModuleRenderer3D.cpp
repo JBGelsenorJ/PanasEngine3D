@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "glmath.h"
 #include "Light.h"
+#include "importer.h"
 
 #include "GLglew/glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -194,6 +195,23 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+
+		mesh = &App->imp->myMesh;
+
+		glGenBuffers(1, (GLuint*)&mesh->id_vertex);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertex, GL_STATIC_DRAW);
+
+
+		glGenBuffers(1, (GLuint*)&mesh->id_index);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->index, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*)&mesh->id_normals);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
+
+
 	}
 
 	// Projection matrix for
@@ -225,30 +243,26 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
-{
-	//CreateCubeVertex();
-	//CreateCubeIndex();
-	//CreatecubeDirect();
+{	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
-	/*uint my_indices = 1;
-	glGenBuffers(1, (GLuint*) & (my_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, App->imp->myMesh.id_vertex);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, NULL);*/
+	glBindBuffer(GL_ARRAY_BUFFER, App->imp->myMesh.id_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
 
-	/*
-	App->level->Draw();
-	if (debug_draw == true)
-	{
-		BeginDebugDraw();
-		App->DebugDraw();
-		EndDebugDraw();
-	}
-	*/
-	//App->editor->Draw();
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, App->imp->myMesh.id_index);
+
+	glDrawElements(GL_TRIANGLES, App->imp->myMesh.num_index, GL_UNSIGNED_INT, NULL);
+
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	App->gui->Draw();
 	SDL_GL_SwapWindow(App->window->window);
+
 	return UPDATE_CONTINUE;
 }
 

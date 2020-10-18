@@ -25,7 +25,7 @@ bool Importer::Init() {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	UploadFile("warrior.FBX");
+	UploadFile("BakerHouse.fbx");
 	return true;
 }
 
@@ -65,6 +65,14 @@ void Importer::UploadFile(char* file_path) {
 					else { memcpy(&myMesh.index[i * 3], ourMesh->mFaces[i].mIndices, 3 * sizeof(uint)); }
 				}
 			}
+
+			if (ourMesh->HasNormals())
+			{
+				myMesh.num_normals = ourMesh->mNumVertices;
+				myMesh.normals = new float[myMesh.num_normals * 3];
+				memcpy(myMesh.normals, ourMesh->mNormals, sizeof(float) * myMesh.num_normals * 3);
+			}
+
 		}
 		
 		aiReleaseImport(scene);

@@ -20,6 +20,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 	void AddLogText(std::string incoming_text);
+	void Draw();
+
 	int width;
 	int height;
 	int fps;

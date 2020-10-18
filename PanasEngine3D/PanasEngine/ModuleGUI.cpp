@@ -412,13 +412,15 @@ update_status ModuleGUI::Update(float dt)
 
 update_status ModuleGUI::PostUpdate(float dt)
 {
-	
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	return UPDATE_CONTINUE;
 }
+void ModuleGUI::Draw() {
 
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+}
 bool ModuleGUI::CleanUp() {
 	
 	ImGui_ImplOpenGL3_Shutdown();
