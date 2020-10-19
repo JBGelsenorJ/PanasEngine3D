@@ -67,23 +67,39 @@ void Importer::UploadFile(char* file_path) {
 
 			if (ourMesh->HasNormals())
 			{
+				
 				myMesh.num_normals = ourMesh->mNumVertices;
 				myMesh.normals = new float[myMesh.num_normals * 3];
-				memcpy(myMesh.normals, ourMesh->mNormals, sizeof(float) * myMesh.num_normals * 3);
+				for (unsigned int i = 0, v = 0; i < myMesh.num_normals; i++, v += 3)
+				{
+					myMesh.normals[v] = ourMesh->mNormals[i].x;
+					myMesh.normals[v + 1] = ourMesh->mNormals[i].y;
+					myMesh.normals[v + 2] = ourMesh->mNormals[i].z;
+				}
 			}
 
-			if (ourMesh->HasVertexColors(i))
+			if (ourMesh->HasVertexColors(0))
 			{
 				myMesh.num_colors = ourMesh->mNumVertices;
 				myMesh.colors = new float[myMesh.num_colors * 4];
-				memcpy(myMesh.colors, ourMesh->mColors, sizeof(float) * myMesh.num_colors * 4);
+				for (unsigned int i = 0, v = 0; i < myMesh.num_colors; i++, v += 4)
+				{
+					myMesh.colors[v] = ourMesh->mColors[0][i].r;
+					myMesh.colors[v + 1] = ourMesh->mColors[0][i].g;
+					myMesh.colors[v + 2] = ourMesh->mColors[0][i].b;
+					myMesh.colors[v + 3] = ourMesh->mColors[0][i].a;
+				}
 			}
 
-			if (ourMesh->HasTextureCoords(i))
+			if (ourMesh->HasTextureCoords(0))
 			{
 				myMesh.num_texcoords = ourMesh->mNumVertices;
 				myMesh.texcoords = new float[myMesh.num_texcoords * 2];
-				memcpy(myMesh.texcoords, ourMesh->mTextureCoords, sizeof(float) * myMesh.num_texcoords * 2);
+				for (unsigned int i = 0, v = 0; i < myMesh.num_texcoords; i++, v += 2)
+				{
+					myMesh.texcoords[v] = ourMesh->mTextureCoords[0][i].x;
+					myMesh.texcoords[v + 1] = ourMesh->mTextureCoords[0][i].y;
+				}
 			}
 
 		}

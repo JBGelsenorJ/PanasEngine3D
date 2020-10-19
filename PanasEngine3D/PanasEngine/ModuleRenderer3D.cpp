@@ -254,7 +254,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 void ModuleRenderer3D::LoadFBXBuffer() {
-	
+
 	mesh = &App->imp->myMesh;
 
 	glGenBuffers(1, (GLuint*)&mesh->id_vertex);
@@ -267,7 +267,7 @@ void ModuleRenderer3D::LoadFBXBuffer() {
 
 	glGenBuffers(1, (GLuint*)&mesh->id_normals);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals * 3, mesh->normals, GL_STATIC_DRAW);
 
 }
 
@@ -276,15 +276,15 @@ void ModuleRenderer3D::RenderFBX() {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-	glBindBuffer(GL_ARRAY_BUFFER, App->imp->myMesh.id_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ARRAY_BUFFER, App->imp->myMesh.id_normals);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, App->imp->myMesh.id_index);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 
-	glDrawElements(GL_TRIANGLES, App->imp->myMesh.num_index, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
