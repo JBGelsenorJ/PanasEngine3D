@@ -29,6 +29,7 @@ public:
 	void SetPolygonssmooth(bool state);
 	void RenderFBX();
 	void LoadFBXBuffer();
+	void DrawFaceNormalLines();
 		
 	void CreateCubeDirect();
 	void CreateCubeVertex();
