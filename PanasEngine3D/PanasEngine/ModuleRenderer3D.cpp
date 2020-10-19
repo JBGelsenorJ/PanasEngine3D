@@ -244,6 +244,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
 	RenderFBX();
+	DrawVertexNormals();
 
 	App->gui->Draw();
 
@@ -293,6 +294,31 @@ void ModuleRenderer3D::RenderFBX() {
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 }
+
+void ModuleRenderer3D::DrawVertexNormalLines()
+{
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	for (size_t i = 0; i < App->imp->myMesh.num_vertex * 3; i += 3)
+	{
+		float v_x = App->imp->myMesh.vertex[i];
+		float v_y = App->imp->myMesh.vertex[i + 1];
+		float v_z = App->imp->myMesh.vertex[i + 2];
+
+		float n_x = App->imp->myMesh.normals[i];
+		float n_y = App->imp->myMesh.normals[i + 1];
+		float n_z = App->imp->myMesh.normals[i + 2];
+
+		glVertex3f(v_x, v_y, v_z);
+		glVertex3f(v_x + n_x, v_y + n_y, v_z + n_z);
+	}
+
+	glEnd();
+	
+}
+
 
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
