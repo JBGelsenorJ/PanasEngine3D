@@ -244,10 +244,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
 	RenderFBX();
-	DrawVertexNormals();
+	DrawVertexNormalLines();
+	DrawFaceNormalLines();
 
 	App->gui->Draw();
-
+	
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -295,6 +296,7 @@ void ModuleRenderer3D::RenderFBX() {
 
 }
 
+
 void ModuleRenderer3D::DrawVertexNormalLines()
 {
 
@@ -316,7 +318,28 @@ void ModuleRenderer3D::DrawVertexNormalLines()
 	}
 
 	glEnd();
-	
+}
+
+void ModuleRenderer3D::DrawFaceNormalLines() {
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+
+	for (size_t i = 0; i < App->imp->myMesh.num_vertex * 3; i += 3)
+	{
+		float x = (App->imp->myMesh.vertex[i] + App->imp->myMesh.vertex[i + 3] + App->imp->myMesh.vertex[i + 6]) / 3;
+		float y = (App->imp->myMesh.vertex[i + 1] + App->imp->myMesh.vertex[i + 4] + App->imp->myMesh.vertex[i + 7]) / 3;
+		float z = (App->imp->myMesh.vertex[i + 2] + App->imp->myMesh.vertex[i + 5] + App->imp->myMesh.vertex[i + 8]) / 3;
+
+		float nx = App->imp->myMesh.normals[i];
+		float ny = App->imp->myMesh.normals[i + 1];
+		float nz = App->imp->myMesh.normals[i + 2];
+
+		glVertex3f(x, y, z);
+		glVertex3f(x + nx, y + ny, z + nz);
+	}
+	glEnd();
+
 }
 
 

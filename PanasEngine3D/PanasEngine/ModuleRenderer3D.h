@@ -30,6 +30,8 @@ public:
 	void RenderFBX();
 	void LoadFBXBuffer();
 	void DrawVertexNormalLines();
+	void DrawFaceNormalLines();
+
 		
 	void CreateCubeDirect();
 	void CreateCubeVertex();
