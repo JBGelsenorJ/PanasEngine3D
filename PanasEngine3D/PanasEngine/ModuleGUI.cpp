@@ -46,8 +46,9 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-	viewconfiguration = false;
-	viewconsole = false;
+	viewconfiguration = true;
+	viewconsole = true;
+	viewhierarchy = true;
 
 }
 
@@ -65,7 +66,7 @@ bool ModuleGUI::Init()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	ImGui::StyleColorsClassic();
+	ImGui::StyleColorsDark();
 
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
@@ -225,6 +226,9 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::MenuItem("Configuration")) {
 				viewconfiguration = !viewconfiguration;
 			}
+			if (ImGui::MenuItem("Hierarchy")) {
+				viewhierarchy = !viewhierarchy;
+			}
 			ImGui::EndMenu();
 		}
 
@@ -257,6 +261,7 @@ update_status ModuleGUI::Update(float dt)
 	if (menuwindow) {
 		ImGui::ShowDemoWindow(&menuwindow);
 	}
+
 	if (viewconfiguration)
 	{
 		ImGui::Begin("Configuration", &viewconfiguration);
@@ -407,6 +412,12 @@ update_status ModuleGUI::Update(float dt)
 		ImGui::End();
 	}
 
+	if (viewhierarchy)
+	{
+		ImGui::Begin("Hierarchy", &viewhierarchy);
+		ImGui::End();
+	}
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -415,12 +426,14 @@ update_status ModuleGUI::PostUpdate(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
 void ModuleGUI::Draw() {
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }
+ 
 bool ModuleGUI::CleanUp() {
 	
 	ImGui_ImplOpenGL3_Shutdown();

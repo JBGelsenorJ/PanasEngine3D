@@ -40,11 +40,12 @@ private:
 	bool aboutwindow;
 	bool viewconsole;
 	bool viewconfiguration;
+	bool viewhierarchy;
 	bool fullscreen;
 	bool resizable;
 	bool borderless;
 	bool fulldesktop;
-
+	
 	bool depthtest;
 	bool cullface;
 	bool lighting;

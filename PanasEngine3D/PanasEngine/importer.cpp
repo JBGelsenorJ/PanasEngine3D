@@ -30,7 +30,7 @@ bool Importer::Init() {
 
 bool Importer::CleanUp() {
 
-	aiDetachAllLogStreams();
+	//aiDetachAllLogStreams();
 	return true;
 }
 
