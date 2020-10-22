@@ -29,6 +29,8 @@ public:
 	bool activeScreen;
 
 	bool wireframe;
+	bool vertexlines;
+	bool facelines;
 
 	bool cube;
 	bool pyramid;
