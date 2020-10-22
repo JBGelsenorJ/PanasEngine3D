@@ -11,6 +11,7 @@ Application::Application()
 	physics = new ModulePhysics3D(this);
 	gui = new ModuleGUI(this);
 	imp = new Importer(this);
+	filesystem = new FileSystem(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -24,6 +25,7 @@ Application::Application()
 	AddModule(physics);
 	AddModule(gui);
 	AddModule(imp);
+	AddModule(filesystem);
 
 	// Scenes
 	AddModule(scene_intro);

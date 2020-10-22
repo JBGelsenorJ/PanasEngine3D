@@ -16,6 +16,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleGUI.h"
 #include "importer.h"
+#include "FileSystem.h"
 
 class Application
 {
@@ -29,6 +30,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleGUI* gui;
 	Importer* imp;
+	FileSystem* filesystem;
 
 private:
 
