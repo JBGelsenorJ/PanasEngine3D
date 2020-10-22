@@ -1,6 +1,14 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
+#include "ModuleRenderer3D.h"
+
+#include "Devil/include/IL/ilu.h"
+#include "Devil/include/IL/ilut.h"
+
+#pragma comment( lib, "Devil/libx86/DevIL.lib" )
+#pragma comment( lib, "Devil/libx86/ILU.lib" )
+#pragma comment( lib, "Devil/libx86/ILUT.lib" )
 
 struct Mesh
 {
@@ -16,8 +24,8 @@ struct Mesh
 	uint	num_colors = 0;
 	float* colors = NULL;
 
-	uint	id_texcoords = 0;
-	uint	num_texcoords = 0;
+	uint	id_texcoords = -1;
+	uint	num_texcoords = -1;
 	float* texcoords = NULL;
 
 	uint id_vertex = 0; // unique vertex in VRAM
@@ -35,6 +43,8 @@ public:
 	bool CleanUp();
 
 	void UploadFile(char* file_path);
+
+	GLuint LoadTexture(char* path);
 
 public:
 	Mesh myMesh;

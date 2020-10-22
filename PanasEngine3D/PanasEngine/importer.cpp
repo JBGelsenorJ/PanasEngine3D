@@ -5,6 +5,7 @@
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
@@ -24,7 +25,14 @@ bool Importer::Init() {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	//UploadFile("BakerHouse.fbx");
+	UploadFile("BakerHouse.fbx");
+	//LoadTexture("BakerHouseIMG.png");
+
+	ilInit();
+	iluInit();
+	ilutInit();
+	ilutRenderer(ILUT_OPENGL);
+
 	return true;
 }
 
@@ -111,3 +119,11 @@ void Importer::UploadFile(char* file_path) {
 		LOG("Error loading scene % s", file_path);
 
 }
+
+GLuint Importer::LoadTexture(char* path)
+{
+	GLuint ret;
+	ret = ilutGLLoadImage(path);
+	return ret;
+}
+

@@ -31,7 +31,7 @@ public:
 	void LoadFBXBuffer();
 	void DrawVertexNormalLines();
 	void DrawFaceNormalLines();
-
+	void LoadingTextures();
 		
 	void CreateCubeDirect();
 	void CreateCubeVertex();
@@ -39,6 +39,8 @@ public:
 	void CreatePyramid();
 	void CreateSphere(float radius, unsigned int rings, unsigned int sectors);
 	void CreateCylinder(float radius, float height, int sides);
+	void DrawDirectModeCube();
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -47,4 +49,6 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	Mesh* mesh;
+
+	GLuint lenna_texture;
 };
