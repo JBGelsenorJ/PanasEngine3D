@@ -41,7 +41,8 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	sphere = false;
 
 	wireframe = false;
-
+	vertexlines = false;
+	facelines = false;
 
 	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -214,6 +215,12 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("Wireframe")) {
 				wireframe = true;
+			}
+			if (ImGui::MenuItem("VertexLines")) {
+				vertexlines = !vertexlines;
+			}
+			if (ImGui::MenuItem("FaceLines")) {
+				facelines = !facelines;
 			}
 			ImGui::EndMenu();
 		}
