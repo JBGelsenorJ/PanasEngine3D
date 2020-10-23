@@ -31,6 +31,7 @@ public:
 	bool wireframe;
 	bool vertexlines;
 	bool facelines;
+	bool checker;
 
 	bool cube;
 	bool pyramid;

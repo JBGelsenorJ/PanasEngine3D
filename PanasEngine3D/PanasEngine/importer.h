@@ -24,9 +24,10 @@ struct Mesh
 	uint	num_colors = 0;
 	float* colors = NULL;
 
-	uint	id_texcoords = -1;
-	uint	num_texcoords = -1;
-	float* texcoords = NULL;
+	uint	id_texcoords = 0;
+	uint	num_texcoords = 0;
+	float* texcoords = nullptr;
+	uint image_id;
 
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
@@ -42,10 +43,11 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void UploadFile(char* file_path);
+	void UploadFile(char* file_path, int id);
 
-	GLuint LoadTexture(char* path);
+	void LoadTexture(char* path);
 
 public:
 	Mesh myMesh;
+	GLuint Gl_Tex;
 };

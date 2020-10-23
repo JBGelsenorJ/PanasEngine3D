@@ -51,4 +51,7 @@ public:
 	Mesh* mesh;
 
 	GLuint lenna_texture;
+	GLuint texture_id;
+	bool rendered;
+	GLubyte checkerImage[64][64][4];
 };

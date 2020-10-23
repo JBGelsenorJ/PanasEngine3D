@@ -103,7 +103,7 @@ std::vector<GLushort> cylinder_indices;
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	context = nullptr;
-
+	rendered = false;
 }
 
 // Destructor
@@ -210,11 +210,13 @@ bool ModuleRenderer3D::Init()
 
 		glGenBuffers(1, (GLuint*)&mesh->id_normals);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals, mesh->normals, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_normals * 3, mesh->normals, GL_STATIC_DRAW);
 
 		glGenBuffers(1, (GLuint*)&mesh->id_texcoords);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texcoords);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_texcoords, mesh->texcoords, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_texcoords * 2, mesh->texcoords, GL_STATIC_DRAW);
+
+		LoadingTextures();
 
 	}
 
@@ -248,7 +250,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {	
-	LoadingTextures();
 	RenderFBX();
 	
 	if (App->gui->vertexlines)
@@ -267,7 +268,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 void ModuleRenderer3D::LoadFBXBuffer() {
-
+	
 	mesh = &App->imp->myMesh;
 
 	glGenBuffers(1, (GLuint*)&mesh->id_vertex);
@@ -284,14 +285,37 @@ void ModuleRenderer3D::LoadFBXBuffer() {
 
 	glGenBuffers(1, (GLuint*)&mesh->id_texcoords);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texcoords);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_texcoords, mesh->texcoords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_texcoords*2, mesh->texcoords, GL_STATIC_DRAW);
 
 }
 
 void ModuleRenderer3D::RenderFBX() {
-	
-	lenna_texture = App->imp->LoadTexture("Lenna.png");
+	if (!App->gui->checker)
+	{
+		if (!rendered)
+		{
+			App->imp->LoadTexture("BakerHouseIMG.png");
+			rendered = true;
+			
+		}
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, mesh->image_id);
+		glBindTexture(GL_TEXTURE_2D, App->imp->Gl_Tex);
+	}
+	else if (App->gui->checker)
+	{
+		rendered = false;
 
+		glEnable(GL_TEXTURE_2D);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64,
+			0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+		
+	}
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -304,22 +328,19 @@ void ModuleRenderer3D::RenderFBX() {
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 
-	glBindTexture(GL_TEXTURE_2D, mesh->id_texcoords);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texcoords);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glBindTexture(GL_TEXTURE_2D, lenna_texture);
-	
 	glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
+	
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+	glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -370,7 +391,6 @@ void ModuleRenderer3D::DrawFaceNormalLines() {
 
 void ModuleRenderer3D::LoadingTextures() {
 
-	GLubyte checkerImage[64][64][4];
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -382,8 +402,8 @@ void ModuleRenderer3D::LoadingTextures() {
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &mesh->id_texcoords);
-	glBindTexture(GL_TEXTURE_2D, mesh->id_texcoords);
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -391,7 +411,6 @@ void ModuleRenderer3D::LoadingTextures() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
 
-	glBindTexture(GL_TEXTURE_2D, lenna_texture);
 }
 
 // Called before quitting

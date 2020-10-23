@@ -114,11 +114,14 @@ update_status ModuleInput::PreUpdate(float dt)
 			break;
 
 			case SDL_DROPFILE:
-
+			{
 				dropped_filedir = e.drop.file;
-				App->imp->UploadFile(dropped_filedir);
+				std::string format(e.drop.file);
+				App->imp->UploadFile(dropped_filedir, App->renderer3D->texture_id);
+				App->imp->LoadTexture(dropped_filedir);
 				App->renderer3D->LoadFBXBuffer();
 				SDL_free(dropped_filedir);
+			}
 				break;
 
 			case SDL_WINDOWEVENT:

@@ -25,8 +25,7 @@ bool Importer::Init() {
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	UploadFile("BakerHouse.fbx");
-	//LoadTexture("BakerHouseIMG.png");
+	UploadFile("BakerHouse.fbx", App->renderer3D->texture_id);
 
 	ilInit();
 	iluInit();
@@ -43,7 +42,7 @@ bool Importer::CleanUp() {
 }
 
 
-void Importer::UploadFile(char* file_path) {
+void Importer::UploadFile(char* file_path, int id) {
 
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -108,6 +107,7 @@ void Importer::UploadFile(char* file_path) {
 					myMesh.texcoords[v] = ourMesh->mTextureCoords[0][i].x;
 					myMesh.texcoords[v + 1] = ourMesh->mTextureCoords[0][i].y;
 				}
+				myMesh.image_id = id;
 			}
 
 		}
@@ -120,10 +120,14 @@ void Importer::UploadFile(char* file_path) {
 
 }
 
-GLuint Importer::LoadTexture(char* path)
+void Importer::LoadTexture(char* path)
 {
-	GLuint ret;
-	ret = ilutGLLoadImage(path);
-	return ret;
+	ILuint Il_Tex;
+
+	ilGenImages(1, &Il_Tex);
+	ilBindImage(Il_Tex);
+	ilLoadImage(path);
+	Gl_Tex = ilutGLBindTexImage();
+	ilDeleteImages(1, &Il_Tex);
 }
 

@@ -50,7 +50,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	viewconfiguration = true;
 	viewconsole = true;
 	viewhierarchy = true;
-
+	checker = false;
 }
 
 ModuleGUI::~ModuleGUI()
@@ -221,6 +221,9 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("FaceLines")) {
 				facelines = !facelines;
+			}
+			if (ImGui::MenuItem("CheckerMode")) {
+				checker = !checker;
 			}
 			ImGui::EndMenu();
 		}
