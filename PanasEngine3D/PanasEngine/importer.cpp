@@ -26,7 +26,7 @@ bool Importer::Init() {
 	aiAttachLogStream(&stream);
 
 	UploadFile("BakerHouse.fbx", App->renderer3D->texture_id);
-
+	LOG("Loading Assimp library");
 	ilInit();
 	iluInit();
 	ilutInit();
@@ -43,9 +43,8 @@ bool Importer::CleanUp() {
 
 
 void Importer::UploadFile(char* file_path, int id) {
-
+	meshfilename = file_path;
 	const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
-
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -57,7 +56,7 @@ void Importer::UploadFile(char* file_path, int id) {
 			myMesh.num_vertex = ourMesh->mNumVertices;
 			myMesh.vertex = new float[myMesh.num_vertex * 3];
 			memcpy(myMesh.vertex, ourMesh->mVertices, sizeof(float) * myMesh.num_vertex * 3);
-			LOG("New mesh with %d vertices", myMesh.num_vertex);
+			LOG("%s mesh loaded succesfully mesh with %d vertices", file_path, myMesh.num_vertex);
 
 			// copy faces
 			if (ourMesh->HasFaces())
@@ -116,18 +115,36 @@ void Importer::UploadFile(char* file_path, int id) {
 	}
 
 	else
-		LOG("Error loading scene % s", file_path);
+		LOG("Error loading mesh % s", file_path);
 
 }
 
 void Importer::LoadTexture(char* path)
 {
 	ILuint Il_Tex;
-
+	materialfilename = path;
 	ilGenImages(1, &Il_Tex);
 	ilBindImage(Il_Tex);
 	ilLoadImage(path);
 	Gl_Tex = ilutGLBindTexImage();
 	ilDeleteImages(1, &Il_Tex);
+	if (Il_Tex != NULL)
+	{
+		LOG("Successfuly loaded %s texture", path);
+	}
+	else {
+		LOG("Error loading the texture!");
+	}
+}
+char* Importer::GetMeshFileName() {
+
+	return meshfilename;
+
+}
+
+char* Importer::GetMaterialFileName() {
+
+	return materialfilename;
+
 }
 

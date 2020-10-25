@@ -38,12 +38,15 @@ public:
 	bool cylinder;
 	bool sphere;
 
+	bool showmaterial;
+
 private:
 	bool menuwindow;
 	bool aboutwindow;
 	bool viewconsole;
 	bool viewconfiguration;
 	bool viewhierarchy;
+	bool viewinspector;
 	bool fullscreen;
 	bool resizable;
 	bool borderless;
@@ -65,6 +68,8 @@ private:
 	std::vector<float> ms_log;
 
 	std::vector<std::string> log_record;
+
+	ImGuiTreeNodeFlags OpenedHeadersFlag;
 
 };
 

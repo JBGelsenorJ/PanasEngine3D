@@ -46,8 +46,13 @@ public:
 	void UploadFile(char* file_path, int id);
 
 	void LoadTexture(char* path);
-
+	char* GetMeshFileName();
+	char* GetMaterialFileName();
+private:
+	char* meshfilename;
+	char* materialfilename;
 public:
 	Mesh myMesh;
 	GLuint Gl_Tex;
+	
 };

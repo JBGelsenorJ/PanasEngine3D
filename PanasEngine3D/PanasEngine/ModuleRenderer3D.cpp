@@ -118,6 +118,10 @@ bool ModuleRenderer3D::Init()
 
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
+	if (context != NULL)
+	{
+		LOG("OpenGL context successfully created")
+	}
 	if (context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -125,7 +129,10 @@ bool ModuleRenderer3D::Init()
 	}
 
 	GLenum error = glewInit();
-
+	if (error == GL_NO_ERROR)
+	{
+		LOG("Successfully initializated glew library");
+	}
 	if (error != GL_NO_ERROR)
 	{
 		LOG("Error initializing glew library! %s", SDL_GetError());
@@ -142,20 +149,16 @@ bool ModuleRenderer3D::Init()
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		//Check for error
-		GLenum error = glGetError();
-		if (error != GL_NO_ERROR)
-		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
-			ret = false;
-		}
-
 		//Initialize Modelview Matrix
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
 		//Check for error
 		error = glGetError();
+		if (error == GL_NO_ERROR)
+		{
+			LOG("Successfully initializated OpenGL library")
+		}
 		if (error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
@@ -167,14 +170,6 @@ bool ModuleRenderer3D::Init()
 
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
-
-		//Check for error
-		error = glGetError();
-		if (error != GL_NO_ERROR)
-		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
-			ret = false;
-		}
 
 		GLfloat LightModelAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);

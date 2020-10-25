@@ -24,7 +24,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 
 	fullscreen = false;
 	resizable = false;
-	borderless = true;
+	borderless = false;
 	fulldesktop = false;
 
 	depthtest = false;
@@ -32,7 +32,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	lighting = false;
 	colormaterial = false;
 	texture2D = false;
-	cubemap = false;
+	cubemap = true;
 	polygonssmooth = false;
 
 	cube = false;
@@ -43,6 +43,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	wireframe = false;
 	vertexlines = false;
 	facelines = false;
+	checker = false;
 
 	fps_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	ms_log = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -50,7 +51,9 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	viewconfiguration = true;
 	viewconsole = true;
 	viewhierarchy = true;
-	checker = false;
+	viewinspector = true;
+	
+	
 }
 
 ModuleGUI::~ModuleGUI()
@@ -66,7 +69,6 @@ bool ModuleGUI::Init()
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplOpenGL3_Init();
@@ -220,31 +222,47 @@ update_status ModuleGUI::Update(float dt)
 				cylinder = false;
 				sphere = false;
 				cube = !cube;
+				if (cube)
+				{
+					LOG("Cube primitive created");
+				}
 			}
 			if (ImGui::MenuItem("Pyramid")) {
 				cube = false;
 				cylinder = false;
 				sphere = false;
 				pyramid = !pyramid;
+				if (pyramid)
+				{
+					LOG("Pyramid primitive created")
+				}	
 			}
 			if (ImGui::MenuItem("Cylinder")) {
 				pyramid = false;
 				cube = false;
 				sphere = false;
 				cylinder = !cylinder;
+				if (cylinder)
+				{
+					LOG("Cylinder primitive created")
+				}
 			}
 			if (ImGui::MenuItem("Sphere")) {
 				pyramid = false;
 				cylinder = false;
 				cube = false;
 				sphere = !sphere;
+				if (sphere)
+				{
+					LOG("Sphere primitive created")
+				}
 			}
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Draw mode"))
 		{
-			if (ImGui::MenuItem("Solid")) {
+			/*if (ImGui::MenuItem("Solid")) {
 				wireframe = false;
 			}
 			if (ImGui::MenuItem("Wireframe")) {
@@ -255,10 +273,7 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("FaceLines")) {
 				facelines = !facelines;
-			}
-			if (ImGui::MenuItem("CheckerMode")) {
-				checker = !checker;
-			}
+			}*/
 			ImGui::EndMenu();
 		}
 
@@ -272,6 +287,10 @@ update_status ModuleGUI::Update(float dt)
 			}
 			if (ImGui::MenuItem("Hierarchy")) {
 				viewhierarchy = !viewhierarchy;
+			}
+			if (ImGui::MenuItem("Inspector"))
+			{
+				viewinspector = !viewinspector;
 			}
 			ImGui::EndMenu();
 		}
@@ -383,11 +402,63 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%i Mb", App->GetReserved());
 		}
-		if (ImGui::CollapsingHeader("Renderer")) {
+		ImGui::End();
+	}
 
-			ImGui::Text("OPENGL OPTIONS: ");
+	if (viewconsole) {
+		ImGui::Begin("Console", &viewconsole);
 
+		for (int i = 0; i < log_record.size(); i++)
+		{
+			ImGui::Text("%s", log_record[i].c_str());
+		}
+		ImGui::End();
+	}
+
+	if (viewhierarchy)
+	{
+		ImGui::Begin("Hierarchy", &viewhierarchy);
+		ImGui::End();
+	}
+	if (viewinspector)
+	{
+		ImGui::Begin("Inspector", &viewhierarchy);
+		if (ImGui::CollapsingHeader("Local Transformation"))
+		{
+			ImGui::Separator();
+			vec3 position = {0,0,0};
+			vec3 rotation = {0,0,0};
+			vec3 scale = {0,0,0};
+			if (ImGui::DragFloat3("Position",&position, 0.1f))
+			{
+				
+			}
+
+			if (ImGui::DragFloat3("Rotation", &rotation, 0.1f))
+			{
+				
+			}
+
+			if (ImGui::DragFloat3("Scale", &scale, 0.1f))
+			{
+				
+			}
+		}
+		if (ImGui::CollapsingHeader("Mesh"))
+		{
+			ImGui::Separator();
+			ImGui::Text("File:");
+			ImGui::SameLine();
+			ImGui::TextColored({ 1.0f, 1.0f, 0.0f, 1.0f }, "%s", App->imp->GetMeshFileName());
+			ImGui::Separator();
 			ImGui::BulletText("General");
+
+			if (ImGui::Checkbox("Wireframe", &wireframe));
+
+			if (ImGui::Checkbox("See Vertex Lines (Red)", &vertexlines));
+
+			if (ImGui::Checkbox("See Face Lines (Yellow)", &facelines));
+
 			if (ImGui::Checkbox("Depth Test", &depthtest)) {
 				App->renderer3D->SetDepthtest(depthtest);
 			}
@@ -405,6 +476,15 @@ update_status ModuleGUI::Update(float dt)
 				App->renderer3D->SetPolygonssmooth(polygonssmooth);
 			}
 
+		}
+		if (ImGui::CollapsingHeader("Material"))
+		{
+			ImGui::Separator();
+			ImGui::Text("File:");
+			ImGui::SameLine();
+			ImGui::TextColored({ 1.0f, 1.0f, 0.0f, 1.0f }, "%s", App->imp->GetMaterialFileName());
+			ImGui::Separator();
+
 			ImGui::BulletText("Color");
 			if (ImGui::Checkbox("Color Material", &colormaterial)) {
 				App->renderer3D->SetColormaterial(colormaterial);
@@ -414,28 +494,14 @@ update_status ModuleGUI::Update(float dt)
 			if (ImGui::Checkbox("2D", &texture2D)) {
 				App->renderer3D->SetTexture2D(texture2D);
 			}
+
 			ImGui::SameLine();
 			if (ImGui::Checkbox("Cube Map", &cubemap)) {
 				App->renderer3D->SetCubemap(cubemap);
 			}
 
+			if (ImGui::Checkbox("Checker Mode", &checker));			
 		}
-		ImGui::End();
-	}
-
-	if (viewconsole) {
-		ImGui::Begin("Console", &viewconsole);
-
-		for (int i = 0; i < log_record.size(); i++)
-		{
-			ImGui::Text("%s", log_record[i].c_str());
-		}
-		ImGui::End();
-	}
-
-	if (viewhierarchy)
-	{
-		ImGui::Begin("Hierarchy", &viewhierarchy);
 		ImGui::End();
 	}
 	
