@@ -168,10 +168,44 @@ update_status ModuleGUI::Update(float dt)
 
 	if (ImGui::BeginMainMenuBar()) {
 
-		//Exit Menu
+		if (ImGui::BeginMenu("File")) {
 
-		if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closewindow = true;
+			if (ImGui::MenuItem("Save", NULL)) {
+			}
+			if (ImGui::MenuItem("Load", NULL)) {
+			}
 
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Editor Windows", NULL)) {
+				viewconfiguration = !viewconfiguration;
+				viewconsole = !viewconsole;
+				viewhierarchy = !viewhierarchy;
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Documentation", NULL)) {
+				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/wiki", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Download latest", NULL)) {
+				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/releases", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Report a bug", NULL)) {
+				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/issues", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("About", NULL)) {
+				aboutwindow = true;
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Exit", "(Alt+F4)")) App->closewindow = true;
+
+
+			ImGui::EndMenu();
+		}
+		
 		//Examples Menu
 		if (ImGui::MenuItem("Examples")) {
 
@@ -241,29 +275,6 @@ update_status ModuleGUI::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
-
-		if (ImGui::BeginMenu("Help")) {
-
-			if (ImGui::MenuItem("Gui Demo", NULL)) {
-				menuwindow = !menuwindow;
-			}
-			if (ImGui::MenuItem("Documentation", NULL)) {
-				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/wiki", NULL, NULL, SW_SHOWNORMAL);
-			}
-			if (ImGui::MenuItem("Download latest", NULL)) {
-				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/releases", NULL, NULL, SW_SHOWNORMAL);
-			}
-			if (ImGui::MenuItem("Report a bug", NULL)) {
-				ShellExecuteA(NULL, "open", "https://github.com/JBGelsenorJ/PanasEngine3D/issues", NULL, NULL, SW_SHOWNORMAL);
-			}
-			if (ImGui::MenuItem("About", NULL)) {
-				aboutwindow = true;
-			}
-
-
-			ImGui::EndMenu();
-		}
-
 	}
 
 	ImGui::EndMainMenuBar();
