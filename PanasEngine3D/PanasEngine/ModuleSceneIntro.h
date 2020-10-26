@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "ImGui/imgui.h"
 
+class GameObject;
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -13,5 +15,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	GameObject* CreateGameObject(GameObject* GameObject);
+
 public:
+
+	std::vector<GameObject*> game_objects;
 };
