@@ -21,6 +21,9 @@ public:
 	virtual void Update();
 	virtual void Disable();
 
+	ComponentType ReturnType();
+	GameObject* ReturnGameObject();
+
 	
 public:
 

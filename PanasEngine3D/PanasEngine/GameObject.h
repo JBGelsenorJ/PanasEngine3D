@@ -14,8 +14,9 @@ public:
 
 	void Update();
 
+	Component* GetComponent(ComponentType component);
 	Component* CreateComponent(ComponentType type);
-	
+	void AddComponent(Component* component);
 
 public:
 

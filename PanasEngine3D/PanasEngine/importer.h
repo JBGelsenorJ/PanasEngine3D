@@ -52,6 +52,7 @@ private:
 	char* meshfilename;
 	char* materialfilename;
 public:
+
 	Mesh myMesh;
 	GLuint Gl_Tex;
 	

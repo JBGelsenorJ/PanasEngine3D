@@ -5,6 +5,8 @@
 #include "Light.h"
 #include "importer.h"
 
+typedef void* SDL_GLContext;
+
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module
