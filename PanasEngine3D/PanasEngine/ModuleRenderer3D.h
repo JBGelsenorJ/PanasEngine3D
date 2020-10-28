@@ -6,6 +6,9 @@
 #include "importer.h"
 
 typedef void* SDL_GLContext;
+struct Mesh;
+typedef unsigned int GLuint;
+typedef signed char GLbyte;
 
 #define MAX_LIGHTS 8
 
@@ -47,5 +50,5 @@ public:
 	GLuint lenna_texture;
 	GLuint texture_id;
 	bool rendered;
-	GLubyte checkerImage[64][64][4];
+	GLbyte checkerImage[64][64][4];
 };
