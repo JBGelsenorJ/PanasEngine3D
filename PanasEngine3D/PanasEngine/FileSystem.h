@@ -1,9 +1,8 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-
 #include <vector>
-
+#include <string>
 struct SDL_RWops;
 int close_sdl_rwops(SDL_RWops* rw);
 
@@ -12,6 +11,12 @@ struct aiFileIO;
 //struct BASS_FILEPROCS;
 class Config;
 struct PathNode;
+
+class GameObject;
+struct ComponentMaterial;
+class ComponentMesh;
+class aiScene;
+struct aiNode;
 
 class FileSystem : public Module
 {
@@ -61,4 +66,7 @@ public:
 
 	//uint64 GetLastModTime(const char* filename);
 	std::string GetUniqueName(const char* path, const char* name) const;
+
+	void LoadFile(const char* file_path);
+	
 };

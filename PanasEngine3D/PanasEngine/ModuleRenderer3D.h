@@ -9,6 +9,7 @@ typedef void* SDL_GLContext;
 struct Mesh;
 typedef unsigned int GLuint;
 typedef signed char GLbyte;
+class ComponentMesh;
 
 #define MAX_LIGHTS 8
 
@@ -32,11 +33,6 @@ public:
 	void SetTexture2D(bool state);
 	void SetCubemap(bool state);
 	void SetPolygonssmooth(bool state);
-	void RenderFBX();
-	void LoadFBXBuffer();
-	void DrawVertexNormalLines();
-	void DrawFaceNormalLines();
-	void LoadingTextures();
 	
 public:
 

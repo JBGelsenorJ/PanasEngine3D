@@ -1,18 +1,31 @@
-#include "Globals.h"
-#include "Application.h"
-#include "Module.h"
 #include "FileSystem.h"
+#include "Application.h"
+#include "ComponentMesh.h"
+
+#include "GameObject.h"
 
 #include "SDL/include/SDL.h"
+#include <fstream>
+#include <iostream>
+#include <Shlwapi.h>
+
+#pragma comment(lib,"shlwapi.lib")
 
 #include "PhysFS/include/physfs.h"
-#include <fstream>
-#include <filesystem>
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
 
-#include "Assimp/include/cfileio.h"
-#include "Assimp/include/types.h"
+#include "Devil/include/IL/il.h"
+#include "Devil/include/IL/ilu.h"
+#include "Devil/include/IL/ilut.h"
 
-#pragma comment( lib, "PhysFS/libx86/physfs.lib" )
+#pragma comment (lib, "PhysFS/libx86/physfs.lib")
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
+
+#pragma comment (lib, "Devil/libx86/DevIL.lib")	
+#pragma comment (lib, "Devil/libx86/ILU.lib")	
+#pragma comment (lib, "Devil/libx86/ILUT.lib")	
 
 FileSystem::FileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -490,3 +503,10 @@ std::string FileSystem::GetUniqueName(const char* path, const char* name) const
 	}
 	return finalName;
 }
+
+void FileSystem::LoadFile(const char* file_path)
+{
+	App->scene_intro->CreateGameObject(App->imp->LoadFBX(file_path));	
+}
+
+

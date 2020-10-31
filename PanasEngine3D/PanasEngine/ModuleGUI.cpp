@@ -1,8 +1,13 @@
-#include "Globals.h"
-#include "ModuleGUI.h"
 #include "Application.h"
-
+#include "Globals.h"
 #include "GLglew/glew/include/glew.h"
+#include "ModuleGUI.h"
+#include "ModuleSceneIntro.h"
+#include "GameObject.h"
+
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"

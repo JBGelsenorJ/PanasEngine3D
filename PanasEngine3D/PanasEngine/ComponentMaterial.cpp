@@ -9,3 +9,8 @@ ComponentMaterial::ComponentMaterial() : Component()
 ComponentMaterial::~ComponentMaterial()
 {
 }
+
+void ComponentMaterial::Update()
+{
+	LOG("HOLA ENTRE AQUI");
+}

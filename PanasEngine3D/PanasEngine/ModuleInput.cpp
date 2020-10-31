@@ -117,9 +117,7 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				dropped_filedir = e.drop.file;
 				std::string format(e.drop.file);
-				App->imp->UploadFile(dropped_filedir, App->renderer3D->texture_id);
-				App->imp->LoadTexture(dropped_filedir);
-				App->renderer3D->LoadFBXBuffer();
+				App->filesystem->LoadFile(dropped_filedir);
 				SDL_free(dropped_filedir);
 			}
 				break;

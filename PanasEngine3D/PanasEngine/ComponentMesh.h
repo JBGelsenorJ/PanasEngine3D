@@ -21,18 +21,19 @@ public:
 	void CreateSphere(float radius, unsigned int rings, unsigned int sectors);
 	void CreateCylinder(float radius, float height, int sides);
 
+	virtual void Update();
+
 	void RenderFBX();
 	void LoadFBXBuffer();
 	void DrawVertexNormalLines();
 	void DrawFaceNormalLines();
 	void LoadingTextures();
-
 public:
 
-	/*GLuint Gl_Tex;
+	GLuint Gl_Tex;
 	GLuint lenna_texture;
 	bool rendered;
-	GLubyte checkerImage[64][64][4];*/
+	GLubyte checkerImage[64][64][4];
 
 public:
 	
@@ -56,6 +57,4 @@ public:
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
 	float* vertex = nullptr;
-	
-
 };

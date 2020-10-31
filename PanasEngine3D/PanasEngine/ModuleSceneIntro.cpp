@@ -1,11 +1,13 @@
 #include "Globals.h"
-#include "Module.h"
 #include "Application.h"
+#include "Module.h"
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "ImGui/imgui.h"
 #include "ModuleGUI.h"
-
+#include "ComponentMesh.h"
+#include "FileSystem.h"
+#include "GameObject.h"
 
 class ComponentMesh;
 
@@ -24,6 +26,10 @@ bool ModuleSceneIntro::Start()
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
+
+	GameObject* house = App->imp->LoadFBX("BakerHouse.FBX");
+	CreateGameObject(house);
+	
 	return ret;
 }
 
@@ -31,6 +37,13 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	for (size_t i = 0; i < game_objects.size(); i++)
+	{
+		delete game_objects[i];
+		game_objects[i] = nullptr;
+	}
+	game_objects.clear();
 
 	return true;
 }
@@ -49,7 +62,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	else if (App->gui->wireframe == false) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	if (App->gui->cube) {
+	/*if (App->gui->cube) {
 		ComponentMesh CreateCubeDirect();
 	}
 
@@ -66,13 +79,22 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->gui->sphere)
 	{
 		ComponentMesh CreateSphere();
-	}
+	}*/
 
+	for (size_t i = 0; i < game_objects.size(); i++)
+	{
+
+		game_objects[i]->Update();
+	}
 
 	return UPDATE_CONTINUE;
 }
 
 
-GameObject* ModuleSceneIntro::CreateGameObject(GameObject* GameObject) {
-	return GameObject;
+GameObject* ModuleSceneIntro::CreateGameObject(GameObject* father) {
+	
+	GameObject* newgo = new GameObject();
+	newgo->parent = father;
+	game_objects.push_back(newgo);
+	return newgo;
 }

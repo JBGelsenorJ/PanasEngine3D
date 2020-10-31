@@ -15,9 +15,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	GameObject* CreateGameObject(GameObject* GameObject);
+	GameObject* CreateGameObject(GameObject* parent);
 
 public:
-
 	std::vector<GameObject*> game_objects;
 };

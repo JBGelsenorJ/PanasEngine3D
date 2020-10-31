@@ -16,12 +16,14 @@ public:
 
 	Component* GetComponent(ComponentType component);
 	Component* CreateComponent(ComponentType type);
-	void AddComponent(Component* component);
+	bool DeleteComponent(Component* component);
 
 public:
 
+	GameObject* parent;
 	bool active;
-	std::string name;
+	char* name;
 	std::vector<Component*> components;
+	std::vector<GameObject*> children;
 };
 

@@ -11,7 +11,7 @@ public:
 
 	ComponentMaterial();
 	~ComponentMaterial();
-
+	void Update();
 public:
 
 };

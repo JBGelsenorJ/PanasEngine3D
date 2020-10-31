@@ -4,20 +4,33 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ImGui/imgui.h"
 
-GameObject::GameObject()
+#include <vector>
+
+GameObject::GameObject() : active(true), name("Game Object"), parent(nullptr)
 {
-	active = true;
-
+	CreateComponent(ComponentType::Transform);
 }
 
 GameObject::~GameObject()
 {
-	
+	parent = nullptr;
+	components.clear();
+	children.clear();
 }
 
 void GameObject::Update() {
 
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		components[i]->Update();
+	}
+
+	for (size_t i = 0; i < children.size(); i++)
+	{
+		children[i]->Update();
+	}
 }
 
 Component* GameObject::GetComponent(ComponentType component) {
@@ -34,9 +47,10 @@ Component* GameObject::GetComponent(ComponentType component) {
 }
 
 Component* GameObject::CreateComponent(ComponentType type) {
-	
+
 	Component* component = nullptr;
-	switch (type) 
+
+	switch (type)
 	{
 		case ComponentType::Transform:
 			component = new ComponentTransform();
@@ -51,12 +65,21 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			components.push_back(component);
 			break;
 	}
+
 	return component;
 }
 
+bool GameObject::DeleteComponent(Component* component)
+{
+	for (size_t i = 0; i < components.size(); i++)
+	{
+		if (components[i] == component) {
+			delete components[i];
+			components.erase(components.begin() + i);
+			component = nullptr;
+			return true;
+		}
+	}
 
-void GameObject::AddComponent(Component* component) {
-
-	components.push_back(component);
-
+	return false;
 }
