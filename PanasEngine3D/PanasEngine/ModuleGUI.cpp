@@ -126,9 +126,6 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::BulletText("SDL ");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%d.%d.%d", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
-			ImGui::BulletText("SDL Mixer ");
-			ImGui::SameLine();
-			ImGui::TextColored(color, "%d.%d.%d", SDL_MIXER_MAJOR_VERSION, SDL_MIXER_MINOR_VERSION, SDL_MIXER_PATCHLEVEL);
 			ImGui::BulletText("ImGui ");
 			ImGui::SameLine();
 			ImGui::TextColored(color, "%s", ImGui::GetVersion());
