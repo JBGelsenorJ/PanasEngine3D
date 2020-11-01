@@ -60,7 +60,6 @@ ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id,
 		{
 			parent = App->scene_intro->CreateGameObject(nullptr);
 			myMesh = (ComponentMesh*)(parent->CreateComponent(ComponentType::Mesh));
-			myMesh->texture = Gl_Tex;
 			aiMesh* ourMesh = scene->mMeshes[i];
 			myMesh->LoadingCheckerTextures();
 			// copy vertices
