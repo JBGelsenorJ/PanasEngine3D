@@ -19,4 +19,9 @@ public:
 
 public:
 	std::vector<GameObject*> game_objects;
+
+	GameObject* selected;
+
+	std::string name;
+
 };

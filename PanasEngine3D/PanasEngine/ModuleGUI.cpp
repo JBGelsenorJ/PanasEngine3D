@@ -57,8 +57,7 @@ ModuleGUI::ModuleGUI(Application* app, bool start_enabled) : Module(app, start_e
 	viewconsole = true;
 	viewhierarchy = true;
 	viewinspector = true;
-	
-	
+
 }
 
 ModuleGUI::~ModuleGUI()
@@ -423,6 +422,12 @@ update_status ModuleGUI::Update(float dt)
 	if (viewhierarchy)
 	{
 		ImGui::Begin("Hierarchy", &viewhierarchy);
+
+		if (ImGui::Button("Delete"))
+		{
+			App->scene_intro->CleanUp();
+		}
+		GameObjectsHierarchy();
 		ImGui::End();
 	}
 	if (viewinspector)
@@ -595,4 +600,26 @@ update_status ModuleGUI::DockSpace(bool* p_open)
 
 	return ret;
 }
+
+void ModuleGUI::GameObjectsHierarchy()
+{
+	
+	if (ImGui::TreeNode("GameObject")) {
+		for (size_t i = 0; i < App->scene_intro->game_objects.size(); i = i + 2)
+		{
+			if (App->scene_intro->game_objects[i]->parent != nullptr) continue;
+
+			if (ImGui::TreeNodeEx(App->scene_intro->game_objects[i]->name.c_str(), ImGuiTreeNodeFlags_Leaf)) {
+				if (ImGui::IsItemClicked()) {
+					App->scene_intro->selected = App->scene_intro->game_objects[i];
+				}
+			}
+			ImGui::TreePop();
+		}
+		ImGui::TreePop();
+	}
+	
+
+}
+
 

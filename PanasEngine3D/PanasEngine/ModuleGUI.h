@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 	void AddLogText(std::string incoming_text);
 	void Draw();
+	void GameObjectsHierarchy();
 
 	int width;
 	int height;

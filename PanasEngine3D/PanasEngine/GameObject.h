@@ -1,7 +1,9 @@
 #pragma once
 #include "Globals.h"
 #include <vector>
+#include <string>
 #include <iostream>
+#include "ImGui/imgui.h"
 
 class Component;
 enum class ComponentType;
@@ -22,7 +24,7 @@ public:
 
 	GameObject* parent;
 	bool active;
-	char* name;
+	std::string name;
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
 };
