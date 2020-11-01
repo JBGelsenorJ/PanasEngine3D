@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "FileSystem.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -14,6 +15,8 @@
 
 Importer::Importer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	materialfilename = "None";
+	meshfilename = "None";
 }
 
 
@@ -44,9 +47,11 @@ bool Importer::CleanUp() {
 }
 
 
-ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id) {
+ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id, const char* path) {
 	GameObject* parent = nullptr;
 	ComponentMesh* myMesh = nullptr;
+	ComponentMaterial* material = nullptr;
+	
 	aiMesh* currentAiMesh = scene->mMeshes[*node->mMeshes];
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -55,8 +60,9 @@ ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id)
 		{
 			parent = App->scene_intro->CreateGameObject(nullptr);
 			myMesh = (ComponentMesh*)(parent->CreateComponent(ComponentType::Mesh));
+			material = (ComponentMaterial*)(parent->CreateComponent(ComponentType::Material));
 			aiMesh* ourMesh = scene->mMeshes[i];
-
+			myMesh->LoadingCheckerTextures();
 			// copy vertices
 			myMesh->num_vertex = ourMesh->mNumVertices;
 			myMesh->vertex = new float[myMesh->num_vertex * 3];
@@ -124,11 +130,33 @@ ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id)
 
 	return myMesh;
 }
-
-void Importer::LoadTexture(char* path)
+//void Importer::TextureSetter(const aiScene* scene, aiNode* node, const char* path) {
+//	GameObject* parent = nullptr;
+//	ComponentMaterial* myTex = new ComponentMaterial();
+//	aiMesh* currentAiMesh = scene->mMeshes[*node->mMeshes];
+//	aiMaterial* material = scene->mMaterials[currentAiMesh->mMaterialIndex];
+//	if (scene != nullptr && scene->HasMeshes())
+//	{
+//		// Use scene->mNumMeshes to iterate on scene->mMeshes array
+//		for (int i = 0; i < scene->mNumMeshes; i++)
+//		{
+//			parent = App->scene_intro->CreateGameObject(nullptr);
+//			myTex = (ComponentMaterial*)(parent->CreateComponent(ComponentType::Material));
+//			aiMaterial* ourMaterial = scene->mMaterials[i];
+//			myTex->LoadingTextures();
+//			myTex->owner = parent;
+//			myTex->Gl_Tex = LoadTexture(path);
+//		}
+//		
+//	}
+//	else
+//		LOG("Error loading tex % s");
+//}
+void Importer::LoadTexture(const char* path)
 {
 	ILuint Il_Tex;
 	materialfilename = path;
+	//materialfilename = path;
 	ilGenImages(1, &Il_Tex);
 	ilBindImage(Il_Tex);
 	ilLoadImage(path);
@@ -142,13 +170,13 @@ void Importer::LoadTexture(char* path)
 		LOG("Error loading the texture!");
 	}
 }
-char* Importer::GetMeshFileName() {
+const char* Importer::GetMeshFileName() {
 
 	return meshfilename;
 
 }
 
-char* Importer::GetMaterialFileName() {
+const char* Importer::GetMaterialFileName() {
 
 	return materialfilename;
 
@@ -158,32 +186,32 @@ GameObject* Importer::LoadFBX(const char* path)
 {
 
 	GameObject* parent = new GameObject();
-
+	meshfilename = path;
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		aiNode* parentNode = scene->mRootNode;
-		RecursiveCall(scene, parentNode, nullptr, parent);
+		RecursiveCall(scene, parentNode, nullptr, parent, path);
 		aiReleaseImport(scene);
 	}
 
 	return parent;
 }
 
-void Importer::RecursiveCall(const aiScene* scene, aiNode* node, aiNode* parentNode, GameObject* parent)
+void Importer::RecursiveCall(const aiScene* scene, aiNode* node, aiNode* parentNode, GameObject* parent, const char* path)
 {
 	GameObject* gameObject = new GameObject();
 
 	if (node->mMeshes != nullptr)
 	{
-		ComponentMesh* mesh = App->imp->UploadFile(scene, node, true);
+		ComponentMesh* mesh = App->imp->UploadFile(scene, node, true, path);
 		gameObject->components.push_back(mesh);
 	}
 
 	for (size_t i = 0; i < node->mNumChildren; i++)
 	{
-		RecursiveCall(scene, node->mChildren[i], node, gameObject);
+		RecursiveCall(scene, node->mChildren[i], node, gameObject, path);
 	}
 	parent->children.push_back(gameObject);
 	gameObject->parent = parent;

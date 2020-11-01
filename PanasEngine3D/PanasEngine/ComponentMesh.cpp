@@ -449,32 +449,41 @@ void ComponentMesh::LoadFBXBuffer() {
 void ComponentMesh::Update()
 {
 	RenderFBX();
-	
-	
+	if (App->gui->vertexlines)
+	{
+		DrawVertexNormalLines();
+	}
+	if (App->gui->facelines)
+	{
+		DrawFaceNormalLines();
+	}
 }
 
 void ComponentMesh::RenderFBX() {
-	//if (!App->gui->checker)
-	//{
-		/*App->imp->LoadTexture("BakerHouseIMG.png");
+	
+	if (!App->gui->checker)
+	{
+		if (reload)
+		{
+			App->imp->LoadTexture(App->imp->materialfilename);
+			reload = false;
+		}
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, image_id);
-		glBindTexture(GL_TEXTURE_2D, Gl_Tex);*/
-	//}
-	//else if (App->gui->checker)
-	//{
-	//	//LoadFBXBuffer();
-	//	rendered = false;
-	//	glEnable(GL_TEXTURE_2D);
-	//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64,
-	//		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+		glBindTexture(GL_TEXTURE_2D, App->imp->Gl_Tex);
+	}
+	if (App->gui->checker)
+	{ 
+		reload = true;
+		glEnable(GL_TEXTURE_2D);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+	}
 
-	//}
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -503,7 +512,7 @@ void ComponentMesh::DrawVertexNormalLines()
 {
 
 	glBegin(GL_LINES);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	//glColor3f(1.0f, 0.0f, 0.0f);
 
 	for (size_t i = 0; i < num_vertex * 3; i += 3)
 	{
@@ -525,7 +534,7 @@ void ComponentMesh::DrawVertexNormalLines()
 void ComponentMesh::DrawFaceNormalLines() {
 
 	glBegin(GL_LINES);
-	glColor3f(1.0f, 1.0f, 0.0f);
+	//glColor3f(1.0f, 1.0f, 0.0f);
 
 	for (size_t i = 0; i < num_vertex * 3; i += 3)
 	{
@@ -543,8 +552,7 @@ void ComponentMesh::DrawFaceNormalLines() {
 	glEnd();
 
 }
-
-void ComponentMesh::LoadingTextures() {
+void ComponentMesh::LoadingCheckerTextures() {
 
 	for (int i = 0; i < 64; i++) {
 		for (int j = 0; j < 64; j++) {
@@ -557,8 +565,8 @@ void ComponentMesh::LoadingTextures() {
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &App->renderer3D->texture_id);
-	glBindTexture(GL_TEXTURE_2D, App->renderer3D->texture_id);
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

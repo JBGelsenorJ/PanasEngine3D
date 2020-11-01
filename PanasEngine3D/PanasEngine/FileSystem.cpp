@@ -1,13 +1,14 @@
 #include "FileSystem.h"
 #include "Application.h"
 #include "ComponentMesh.h"
-
+#include "importer.h"
 #include "GameObject.h"
 
 #include "SDL/include/SDL.h"
 #include <fstream>
 #include <iostream>
 #include <Shlwapi.h>
+#include <string>
 
 #pragma comment(lib,"shlwapi.lib")
 
@@ -506,7 +507,15 @@ std::string FileSystem::GetUniqueName(const char* path, const char* name) const
 
 void FileSystem::LoadFile(const char* file_path)
 {
-	App->scene_intro->CreateGameObject(App->imp->LoadFBX(file_path));	
+	char* extension = PathFindExtensionA(file_path);
+
+	if (strcmp(extension, ".fbx") == 0|| strcmp(extension, ".FBX") == 0)
+	{
+		App->scene_intro->CreateGameObject(App->imp->LoadFBX(file_path));
+	}
+	if (strcmp(extension, ".png") == 0 || strcmp(extension, ".dds") == 0) {
+		App->imp->LoadTexture(file_path);
+	}
 }
 
 

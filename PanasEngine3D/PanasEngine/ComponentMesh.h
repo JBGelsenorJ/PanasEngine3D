@@ -3,9 +3,11 @@
 #include "glmath.h"
 #include <vector>
 #include "Component.h"
-#include "importer.h"
 
 class GameObject;
+class ComponentMaterial;
+typedef unsigned int GLuint;
+typedef unsigned char GLubyte;
 
 class ComponentMesh : public Component
 {
@@ -27,13 +29,12 @@ public:
 	void LoadFBXBuffer();
 	void DrawVertexNormalLines();
 	void DrawFaceNormalLines();
-	void LoadingTextures();
-public:
 
-	GLuint Gl_Tex;
-	GLuint lenna_texture;
-	bool rendered;
+	void LoadingCheckerTextures();
+
+public:
 	GLubyte checkerImage[64][64][4];
+	bool rendered;
 
 public:
 	
@@ -57,4 +58,7 @@ public:
 	uint id_vertex = 0; // unique vertex in VRAM
 	uint num_vertex = 0;
 	float* vertex = nullptr;
+	GLuint texture = 0;
+	GLuint texture_id;
+	bool reload = false;
 };

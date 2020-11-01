@@ -40,11 +40,4 @@ public:
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-
-	Mesh* mesh;
-
-	GLuint lenna_texture;
-	GLuint texture_id;
-	bool rendered;
-	GLbyte checkerImage[64][64][4];
 };

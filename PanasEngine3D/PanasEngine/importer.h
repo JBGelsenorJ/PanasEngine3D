@@ -2,7 +2,6 @@
 #include "Globals.h"
 #include "Module.h"
 #include "ModuleRenderer3D.h"
-#include "ComponentMesh.h"
 
 #include "Devil/include/IL/ilu.h"
 #include "Devil/include/IL/ilut.h"
@@ -12,7 +11,7 @@
 #pragma comment( lib, "Devil/libx86/ILUT.lib" )
 
 class GameObject;
-struct ComponentMaterial;
+class ComponentMaterial;
 class ComponentMesh;
 class aiScene;
 struct aiNode;
@@ -50,16 +49,18 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	ComponentMesh* UploadFile(const aiScene* scene, aiNode* node, uint id);
+	ComponentMesh* UploadFile(const aiScene* scene, aiNode* node, uint id, const char* path);
 	GameObject* LoadFBX(const char* path);
-	void RecursiveCall(const aiScene* scene, aiNode* node, aiNode* parentNode, GameObject* parent);
-	void LoadTexture(char* path);
-	char* GetMeshFileName();
-	char* GetMaterialFileName();
+	void TextureSetter(const aiScene* scene, aiNode* node, const char* path);
+	void RecursiveCall(const aiScene* scene, aiNode* node, aiNode* parentNode, GameObject* parent, const char* path);
+	void LoadTexture(const char* path);
+	const char* GetMeshFileName();
+	const char* GetMaterialFileName();
 
+	const char* meshfilename;
+	const char* materialfilename;
 private:
-	char* meshfilename;
-	char* materialfilename;
+	
 public:
 
 	//Mesh myMesh;
