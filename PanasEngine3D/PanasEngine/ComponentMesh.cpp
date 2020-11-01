@@ -410,8 +410,8 @@ void ComponentMesh::CreateCylinder(float radius, float height, int sides) {
 		}
 	}
 
-	glRotatef(90, 1, 0, 0);
-
+	//glRotatef(90, 1, 0, 0);
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -439,8 +439,6 @@ void ComponentMesh::LoadFBXBuffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, id_normals);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_normals * 3, normals, GL_STATIC_DRAW);
 
-
-
 	glGenBuffers(1, (GLuint*)&id_texcoords);
 	glBindBuffer(GL_ARRAY_BUFFER, id_texcoords);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_texcoords * 2, texcoords, GL_STATIC_DRAW);
@@ -449,8 +447,7 @@ void ComponentMesh::LoadFBXBuffer() {
 void ComponentMesh::Update()
 {
 	RenderFBX();
-	
-	
+
 }
 
 void ComponentMesh::RenderFBX() {

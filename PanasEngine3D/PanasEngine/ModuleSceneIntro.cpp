@@ -11,7 +11,7 @@
 
 class ComponentMesh;
 
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled), selected(nullptr)
 {
 }
 
@@ -27,7 +27,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	GameObject* house = App->imp->LoadFBX("BakerHouse.FBX");
+	GameObject* house = App->imp->LoadFBX("Assets/BakerHouse.FBX");
 	CreateGameObject(house);
 	
 	return ret;
@@ -62,39 +62,44 @@ update_status ModuleSceneIntro::Update(float dt)
 	else if (App->gui->wireframe == false) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	/*if (App->gui->cube) {
-		ComponentMesh CreateCubeDirect();
+	if (App->gui->cube) {
+		ComponentMesh* Cube = new ComponentMesh();
+		Cube->CreateCubeDirect();
 	}
 
 	if (App->gui->pyramid)
 	{
-		ComponentMesh CreatePyramid();
+		ComponentMesh* Pyramid = new ComponentMesh();
+		Pyramid->CreatePyramid();
 	}
 
 	if (App->gui->cylinder)
 	{
-		ComponentMesh CreateCylinder();
+		ComponentMesh* Cylinder = new ComponentMesh();
+		Cylinder->CreateCylinder(1, 3, 6);
 	}
 
 	if (App->gui->sphere)
 	{
-		ComponentMesh CreateSphere();
-	}*/
+		ComponentMesh* Sphere = new ComponentMesh();
+		Sphere->CreateSphere(1, 2, 4);
+	}
 
 	for (size_t i = 0; i < game_objects.size(); i++)
 	{
-
 		game_objects[i]->Update();
 	}
 
 	return UPDATE_CONTINUE;
 }
 
-
 GameObject* ModuleSceneIntro::CreateGameObject(GameObject* father) {
 	
 	GameObject* newgo = new GameObject();
 	newgo->parent = father;
 	game_objects.push_back(newgo);
+
+	selected = father;
+
 	return newgo;
 }
