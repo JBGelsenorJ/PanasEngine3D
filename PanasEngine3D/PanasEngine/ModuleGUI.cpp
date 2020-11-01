@@ -264,23 +264,6 @@ update_status ModuleGUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Draw mode"))
-		{
-			/*if (ImGui::MenuItem("Solid")) {
-				wireframe = false;
-			}
-			if (ImGui::MenuItem("Wireframe")) {
-				wireframe = true;
-			}
-			if (ImGui::MenuItem("VertexLines")) {
-				vertexlines = !vertexlines;
-			}
-			if (ImGui::MenuItem("FaceLines")) {
-				facelines = !facelines;
-			}*/
-			ImGui::EndMenu();
-		}
-
 		if (ImGui::BeginMenu("View"))
 		{
 			if (ImGui::MenuItem("Console")) {

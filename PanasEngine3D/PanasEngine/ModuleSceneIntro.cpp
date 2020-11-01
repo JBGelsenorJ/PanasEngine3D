@@ -27,8 +27,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	GameObject* house = App->imp->LoadFBX("BakerHouse.FBX");
-	App->imp->LoadTexture("BakerHouseIMG.png");
+	GameObject* house = App->imp->LoadFBX("Assets/BakerHouse.FBX");
+	App->imp->LoadTexture("Assets/BakerHouseIMG.png");
 	CreateGameObject(house);
 	
 	return ret;
