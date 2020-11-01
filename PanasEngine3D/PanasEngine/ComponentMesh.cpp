@@ -461,13 +461,9 @@ void ComponentMesh::RenderFBX() {
 	
 	if (!App->gui->checker)
 	{
-		if (reload)
-		{
-			App->imp->LoadTexture(App->imp->materialfilename);
-			reload = false;
-		}
+		texture = App->imp->Gl_Tex;
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, App->imp->Gl_Tex);
+		glBindTexture(GL_TEXTURE_2D, texture);
 	}
 	if (App->gui->checker)
 	{ 

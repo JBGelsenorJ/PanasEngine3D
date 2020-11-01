@@ -60,7 +60,7 @@ ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id,
 		{
 			parent = App->scene_intro->CreateGameObject(nullptr);
 			myMesh = (ComponentMesh*)(parent->CreateComponent(ComponentType::Mesh));
-			material = (ComponentMaterial*)(parent->CreateComponent(ComponentType::Material));
+			myMesh->texture = Gl_Tex;
 			aiMesh* ourMesh = scene->mMeshes[i];
 			myMesh->LoadingCheckerTextures();
 			// copy vertices
@@ -130,33 +130,10 @@ ComponentMesh* Importer::UploadFile(const aiScene* scene, aiNode* node, uint id,
 
 	return myMesh;
 }
-//void Importer::TextureSetter(const aiScene* scene, aiNode* node, const char* path) {
-//	GameObject* parent = nullptr;
-//	ComponentMaterial* myTex = new ComponentMaterial();
-//	aiMesh* currentAiMesh = scene->mMeshes[*node->mMeshes];
-//	aiMaterial* material = scene->mMaterials[currentAiMesh->mMaterialIndex];
-//	if (scene != nullptr && scene->HasMeshes())
-//	{
-//		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-//		for (int i = 0; i < scene->mNumMeshes; i++)
-//		{
-//			parent = App->scene_intro->CreateGameObject(nullptr);
-//			myTex = (ComponentMaterial*)(parent->CreateComponent(ComponentType::Material));
-//			aiMaterial* ourMaterial = scene->mMaterials[i];
-//			myTex->LoadingTextures();
-//			myTex->owner = parent;
-//			myTex->Gl_Tex = LoadTexture(path);
-//		}
-//		
-//	}
-//	else
-//		LOG("Error loading tex % s");
-//}
 void Importer::LoadTexture(const char* path)
 {
 	ILuint Il_Tex;
 	materialfilename = path;
-	//materialfilename = path;
 	ilGenImages(1, &Il_Tex);
 	ilBindImage(Il_Tex);
 	ilLoadImage(path);
