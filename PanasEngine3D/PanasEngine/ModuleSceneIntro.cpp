@@ -66,28 +66,24 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->gui->cube) {
 		ComponentMesh* Cube = new ComponentMesh();
 		Cube->CreateCubeDirect();
-		App->gui->cube = false;
 	}
 
 	if (App->gui->pyramid)
 	{
 		ComponentMesh* Pyramid = new ComponentMesh();
 		Pyramid->CreatePyramid();
-		App->gui->pyramid = false;
 	}
 
 	if (App->gui->cylinder)
 	{
 		ComponentMesh* Cylinder = new ComponentMesh();
 		Cylinder->CreateCylinder(1, 3, 6);
-		App->gui->cylinder = false;
 	}
 
 	if (App->gui->sphere)
 	{
 		ComponentMesh* Sphere = new ComponentMesh();
 		Sphere->CreateSphere(1, 24, 24);
-		App->gui->sphere = false;
 	}
 
 	for (size_t i = 0; i < game_objects.size(); i++)

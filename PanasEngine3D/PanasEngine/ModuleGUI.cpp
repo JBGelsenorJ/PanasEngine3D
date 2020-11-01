@@ -445,9 +445,9 @@ update_status ModuleGUI::Update(float dt)
 
 			if (ImGui::Checkbox("Wireframe", &wireframe));
 
-			if (ImGui::Checkbox("See Vertex Lines (Red)", &vertexlines));
+			if (ImGui::Checkbox("See Vertex Lines", &vertexlines));
 
-			if (ImGui::Checkbox("See Face Lines (Yellow)", &facelines));
+			if (ImGui::Checkbox("See Face Lines", &facelines));
 
 			if (ImGui::Checkbox("Depth Test", &depthtest)) {
 				App->renderer3D->SetDepthtest(depthtest);
